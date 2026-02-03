@@ -18,8 +18,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }); // Controller yapısını kullanacağımızı belirtiyoruz
 
-// İleride Dependency Injection için buraya ekleme yapacağız:
-// builder.Services.AddSingleton<IslemService>(); 
 
 // Swagger/OpenAPI desteği (Test arayüzü için)
 builder.Services.AddEndpointsApiExplorer();
