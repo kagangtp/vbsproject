@@ -4,3 +4,7 @@
 .vscode/
 *.user
 *.suo
+bin/
+obj/
+backend/bin/
+backend/obj/

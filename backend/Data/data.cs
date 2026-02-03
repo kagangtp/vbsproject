@@ -1,9 +1,10 @@
-namespace İlkProjem.backend.Data;
 using İlkProjem.backend.Models;
+
+namespace İlkProjem.backend.Data;
 
 public static class VeriAmbori
 {
-    //Api initial verileri
+    //Api initial verileri hardcoded.
     public static List<Islem> VarsayilanIslemleriGetir()
     {
         return new List<Islem>

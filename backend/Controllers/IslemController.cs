@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using İlkProjem.backend.Models; 
 using İlkProjem.backend.Services;
-using Backend.Dtos; // DTO'larının olduğu namespace
+using İlkProjem.backend.Dtos.IslemDtos;
 
 namespace İlkProjem.backend.Controllers;
 

@@ -1,7 +1,16 @@
 ﻿using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
+using İlkProjem.backend.Data;
+using İlkProjem.backend.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Servisleri Konteynera Ekle
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<CustomerService>();
+// Controller'ları ekle ve JSON ayarlarını yap
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {

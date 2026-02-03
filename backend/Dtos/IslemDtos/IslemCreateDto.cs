@@ -1,6 +1,6 @@
-namespace Backend.Dtos;
 using İlkProjem.backend.Models;
 
+namespace İlkProjem.backend.Dtos.IslemDtos;
 public class IslemCreateDto
 {
     public required string Aciklama { get; set; }

@@ -1,4 +1,4 @@
-namespace Backend.Dtos;
+namespace İlkProjem.backend.Dtos.IslemDtos;
 
 public class IslemDeleteDto
 {

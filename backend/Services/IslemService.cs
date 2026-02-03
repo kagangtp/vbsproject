@@ -1,8 +1,9 @@
-namespace İlkProjem.backend.Services;
-
 using İlkProjem.backend.Data;
 using İlkProjem.backend.Models;
+using İlkProjem.backend.Dtos.IslemDtos;
 using System.Linq;
+
+namespace İlkProjem.backend.Services;
 
 public class IslemService
 {
