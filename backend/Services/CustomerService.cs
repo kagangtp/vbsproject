@@ -1,51 +1,48 @@
-namespace İlkProjem.backend.Services;
-
 using İlkProjem.backend.Dtos.CustomerDtos;
-using İlkProjem.backend.Data;
+using İlkProjem.backend.Interfaces;
 using İlkProjem.backend.Models;
-using Microsoft.EntityFrameworkCore;
+
+namespace İlkProjem.backend.Services;
 
 public class CustomerService
 {
-    private readonly AppDbContext _context;
+    private readonly ICustomerRepository _repository; // Artık context değil, repository var
 
-    public CustomerService(AppDbContext context)
+    public CustomerService(ICustomerRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
-    // "Ekle" - CreateDto alıp Customer modeline çevirir
+    // "Ekle" - CreateDto -> Entity
     public async Task AddCustomer(CustomerCreateDto createDto)
     {
         var customer = new Customer 
         {
             Name = createDto.Name,
             Email = createDto.Email
-            // Id ve CreatedAt veritabanı tarafından halledilecek
         };
 
-        _context.Customers.Add(customer);
-        await _context.SaveChangesAsync();
+        await _repository.AddAsync(customer);
     }
 
-    // "Getir" - Tüm listeyi ReadDto olarak döndürür
+    // "Getir" - Entity Listesi -> ReadDto Listesi
     public async Task<List<CustomerReadDto>> GetAllCustomers()
     {
-        return await _context.Customers
-            .Select(c => new CustomerReadDto 
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Email = c.Email,
-                CreatedAt = c.CreatedAt
-            })
-            .ToListAsync();
+        var customers = await _repository.GetAllAsync();
+        
+        return customers.Select(c => new CustomerReadDto 
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Email = c.Email,
+            CreatedAt = c.CreatedAt
+        }).ToList();
     }
 
-    // "GetirById" - Tek bir ReadDto döndürür
+    // "GetirById" - Entity -> ReadDto
     public async Task<CustomerReadDto?> GetCustomerById(int id)
     {
-        var customer = await _context.Customers.FindAsync(id);
+        var customer = await _repository.GetByIdAsync(id);
         
         if (customer == null) return null;
 
@@ -58,29 +55,28 @@ public class CustomerService
         };
     }
 
-    // "Güncelle" - UpdateDto kullanır
+    // "Güncelle" - UpdateDto -> Entity
     public async Task<bool> UpdateCustomer(CustomerUpdateDto updateDto)
     {
-        var existingCustomer = await _context.Customers.FindAsync(updateDto.Id);
-        
+        // Önce veritabanından mevcut kaydı buluyoruz
+        var existingCustomer = await _repository.GetByIdAsync(updateDto.Id);
         if (existingCustomer == null) return false;
 
+        // Bilgileri güncelliyoruz
         existingCustomer.Name = updateDto.Name;
         existingCustomer.Email = updateDto.Email;
 
-        await _context.SaveChangesAsync();
-        return true;
+        // FIX::Solid NO IRL: A mistake to include Balance in the update DTO, but we will ignore this for now
+        existingCustomer.Balance = updateDto.Balance;
+
+        return await _repository.UpdateAsync(existingCustomer);
     }
 
-    // "Sil" - DeleteDto alıp işlemi yapar
+    // "Sil" - DeleteDto ID -> Delete
     public async Task<bool> DeleteCustomer(CustomerDeleteDto deleteDto)
     {
-        var customer = await _context.Customers.FindAsync(deleteDto.Id);
-        
-        if (customer == null) return false;
-
-        _context.Customers.Remove(customer);
-        await _context.SaveChangesAsync();
-        return true;
+        return await _repository.DeleteAsync(deleteDto.Id);
     }
+
+   
 }

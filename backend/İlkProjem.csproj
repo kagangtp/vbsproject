@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework> <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>908e3835-a133-43ca-a574-3b3a8d19b2fb</UserSecretsId>
     <OutputPath>bin\</OutputPath> <!--File sabitleme crashlerse sil-->
     <IntermediateOutputPath>obj\</IntermediateOutputPath>
     <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <UserSecretsId>dc1d5ed4-4497-4be3-bc19-b415346361aa</UserSecretsId>
   </PropertyGroup> 
 
   <ItemGroup>
