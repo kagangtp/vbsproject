@@ -1,0 +1,33 @@
+/* layout/mainpage/mainpage.component.css */
+
+.main-layout {
+  display: grid;
+  /* İki sütun: Sidebar (260px) ve İçerik (Geri kalanı) */
+  grid-template-columns: 260px 1fr;
+  /* İki satır: Navbar (64px) ve Ana Alan (Geri kalanı) */
+  grid-template-rows: 64px 1fr;
+  /* Navbar artık her iki sütunu da kaplıyor (1 / -1) */
+  grid-template-areas: 
+    "navbar navbar"
+    "sidebar content";
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+app-navbar {
+  grid-area: navbar;
+  z-index: 100; /* Navbar her zaman en üstte */
+}
+
+app-sidebar {
+  grid-area: sidebar;
+  border-right: 1px solid #f0f0f0;
+}
+
+.content-area {
+  grid-area: content;
+  overflow-y: auto;
+  background-color: #f8fafc;
+  padding: 24px;
+}

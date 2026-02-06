@@ -27,6 +27,14 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        policy => policy.WithOrigins("http://localhost:4200")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 // 2. HTTP İstek Hattını (Pipeline) Yapılandır
@@ -36,6 +44,10 @@ var app = builder.Build();
     app.UseSwaggerUI();
 
 
+app.UseRouting(); // Önce yönlendirme
+
+// UseCors MUTLAKA UseRouting'den sonra, UseAuthorization'dan ÖNCE gelmeli
+app.UseCors("AllowAngular");
 // HTTPS yönlendirmesi (Güvenlik için)
 app.UseHttpsRedirection();
 

@@ -35,6 +35,7 @@ public class CustomerService
             Id = c.Id,
             Name = c.Name,
             Email = c.Email,
+            Balance = c.Balance,
             CreatedAt = c.CreatedAt
         }).ToList();
     }
