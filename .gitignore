@@ -80,6 +80,7 @@ bazel-out/
 
 # Misc
 .DS_Store
+.env
 Thumbs.db
 
 # Logs
