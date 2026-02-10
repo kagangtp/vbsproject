@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using IlkProjem.BLL.Services;
 using IlkProjem.Core.Dtos.CustomerDtos;
+using IlkProjem.BLL.Interfaces;
 
 namespace IlkProjem.API.Controllers;
 
@@ -8,44 +8,50 @@ namespace IlkProjem.API.Controllers;
 [Route("api/[controller]")]
 public class CustomerController : ControllerBase
 {
-    private readonly CustomerService _service;
+    private readonly ICustomerService _customerService;
 
-    public CustomerController(CustomerService service) => _service = service;
+    public CustomerController(ICustomerService customerService)
+    {
+        _customerService = customerService;
+    }
 
-    // "Getir" Butonu (Tüm Liste)
+    // "Getir" - Tüm Liste
     [HttpGet] 
-    public async Task<ActionResult<List<CustomerReadDto>>> Get() 
-        => Ok(await _service.GetAllCustomers()); // Servis artık ReadDto dönmeli
+    public async Task<IActionResult> Get() 
+    {
+        var result = await _customerService.GetAllCustomers();
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
 
-    // "GetirById" Butonu
+    // "GetirById"
     [HttpGet("{id}")] 
-    public async Task<ActionResult<CustomerReadDto>> Get(int id)
+    public async Task<IActionResult> Get(int id)
     {
-        var customer = await _service.GetCustomerById(id);
-        return customer == null ? NotFound() : Ok(customer);
+        var result = await _customerService.GetCustomerById(id);
+        return result.Success ? Ok(result) : NotFound(result);
     }
 
-    // "Güncelle" Butonu
-    [HttpPut] 
-    public async Task<IActionResult> Update(CustomerUpdateDto updateDto)
-    {
-        var success = await _service.UpdateCustomer(updateDto);
-        return success ? Ok("Güncellendi") : NotFound("Müşteri bulunamadı");
-    }
-
-    // "Ekle" Butonu
+    // "Ekle"
     [HttpPost] 
     public async Task<IActionResult> Post(CustomerCreateDto createDto)
     {
-        await _service.AddCustomer(createDto); // Artık CreateDto gönderiyoruz
-        return Ok("Müşteri eklendi");
+        var result = await _customerService.AddCustomer(createDto);
+        return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    // "Sil" Butonu
+    // "Güncelle"
+    [HttpPut] 
+    public async Task<IActionResult> Update(CustomerUpdateDto updateDto)
+    {
+        var result = await _customerService.UpdateCustomer(updateDto);
+        return result.Success ? Ok(result) : NotFound(result);
+    }
+
+    // "Sil"
     [HttpDelete] 
     public async Task<IActionResult> Delete(CustomerDeleteDto deleteDto)
     {
-        var success = await _service.DeleteCustomer(deleteDto);
-        return success ? NoContent() : NotFound("Silinecek müşteri bulunamadı");
+        var result = await _customerService.DeleteCustomer(deleteDto);
+        return result.Success ? Ok(result) : BadRequest(result);
     }
 }

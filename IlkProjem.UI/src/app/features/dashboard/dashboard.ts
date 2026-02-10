@@ -35,9 +35,13 @@ export class Dashboard implements OnInit {
   }
 
   loadCustomers() {
-    this.customerService.getCustomers().subscribe(data => {
-      this.customers = data;
-    });
+    this.customerService.getCustomers().subscribe(response => {
+    if (response.success) {
+        this.customers = response.data; // FIX: Take the list out of the box
+    } else {
+        console.error(response.message); // Helpful for debugging
+    }
+});
   }
 
   onEdit(customer: Customer) {
@@ -57,29 +61,42 @@ export class Dashboard implements OnInit {
     this.updateForm.reset();
   }
 
-  onUpdate() {
-    if (this.updateForm.valid && this.selectedCustomerId) {
-      const updatedCustomer = { 
-        id: this.selectedCustomerId, 
-        ...this.updateForm.value 
-      };
+  // src/app/features/dashboard/dashboard.ts
 
-      this.customerService.updateCustomer(this.selectedCustomerId, updatedCustomer).subscribe({
-        next: () => {
+onUpdate() {
+  if (this.updateForm.valid && this.selectedCustomerId) {
+    const updatedCustomer = { 
+      id: this.selectedCustomerId, 
+      ...this.updateForm.value 
+    };
+
+    // FIX: Remove 'this.selectedCustomerId' as the first argument
+    this.customerService.updateCustomer(updatedCustomer).subscribe({
+      next: (response) => {
+        if (response.success) {
           this.closeModal();
-          this.loadCustomers(); 
-        },
-        error: (err) => alert('Güncelleme hatası: ' + err.message)
-      });
-    }
+          this.loadCustomers();
+          // Optional: alert(response.message);
+        } else {
+          alert(response.message); // This shows why it failed (e.g., "Müşteri bulunamadı")
+        }
+      },
+      error: (err) => alert('Güncelleme hatası: ' + err.message)
+    });
   }
+}
 
   onDelete(id: number) {
-    const isConfirmed = confirm('Emin misiniz?');
-    if (isConfirmed) {
-      this.customerService.deleteCustomer(id).subscribe(() => this.loadCustomers());
-    }
+  if (confirm('Emin misiniz?')) {
+    this.customerService.deleteCustomer(id).subscribe(response => {
+      if (response.success) {
+        this.loadCustomers();
+      } else {
+        alert(response.message);
+      }
+    });
   }
+}
 
   isAddModalOpen = false;
 
@@ -95,23 +112,22 @@ export class Dashboard implements OnInit {
 
 
 
-// "Kaydet" (Create) işlemi
 onCreate() {
   if (this.updateForm.valid) {
-    // Sadece name ve email'i alıyoruz, balance göndermiyoruz
     const { name, email } = this.updateForm.value;
     const newCustomer = { name, email }; 
 
     this.customerService.createCustomer(newCustomer).subscribe({
-      next: () => {
-        this.isAddModalOpen = false;
-        this.loadCustomers(); // Listeyi yenile
+      next: (response) => {
+        if (response.success) {
+          this.isAddModalOpen = false;
+          this.loadCustomers();
+        } else {
+          alert(response.message);
+        }
       },
-      error: (err) => {
-        // Eğer hala parse error alıyorsan, buradaki mantığı düzelteceğiz
-        console.error("Ekleme hatası:", err);
-      }
-    });
+      error: (err) => console.error("Ekleme hatası:", err)
+      });
+    }
   }
-}
 }

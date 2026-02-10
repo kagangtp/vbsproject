@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="ListFetched" xml:space="preserve">
+    <value>Liste Getirildi</value>
+  </data>
+  <data name="CustomerAdded" xml:space="preserve">
+    <value>Müşteri Eklendi</value>
+  </data>
+</root>

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using IlkProjem.BLL.Services;
+using IlkProjem.BLL.Interfaces;
 
 namespace IlkProjem.API.Controllers;
 
@@ -7,9 +8,9 @@ namespace IlkProjem.API.Controllers;
 [Route("api/[controller]")]
 public class CalculatorController : ControllerBase
 {
-    private readonly CalculatorService _calculatorService;
+    private readonly ICalculatorService _calculatorService;
 
-    public CalculatorController(CalculatorService calculatorService)
+    public CalculatorController(ICalculatorService calculatorService)
     {
         _calculatorService = calculatorService;
     }

@@ -1,8 +1,9 @@
+using IlkProjem.BLL.Interfaces;
 using IlkProjem.DAL.Repositories;
 
 namespace IlkProjem.BLL.Services;
 
-public class CalculatorService
+public class CalculatorService : ICalculatorService
 {
     private readonly ICustomerRepository _customerRepository;
 

@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using IlkProjem.DAL.Data;
 using IlkProjem.BLL.Services;
 using IlkProjem.DAL.Repositories;
+using IlkProjem.BLL.Interfaces;
+using Microsoft.OpenApi;
+using Microsoft.AspNetCore.Mvc.Filters;
+//using IlkProjem.API.Filters.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +15,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-builder.Services.AddScoped<CustomerService>();
-builder.Services.AddScoped<CalculatorService>();
+builder.Services.AddScoped<ICalculatorService,CalculatorService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 // Controller'ları ekle ve JSON ayarlarını yap
 builder.Services.AddControllers()
@@ -26,6 +30,11 @@ builder.Services.AddControllers()
 // Swagger/OpenAPI desteği (Test arayüzü için)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen(options =>
+// {
+//     // This line links the class you just fixed!
+//     options.OperationFilter<IlkProjem.API.Filters.Swagger.LanguageHeaderFilter>();
+// });
 
 builder.Services.AddCors(options =>
 {
@@ -35,8 +44,17 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
+builder.Services.AddLocalization();
+
 var app = builder.Build();
 
+// var supportedCultures = new[] { "tr-TR", "en-US" };
+// var localizationOptions = new RequestLocalizationOptions()
+//     .SetDefaultCulture(supportedCultures[0])
+//     .AddSupportedCultures(supportedCultures)
+//     .AddSupportedUICultures(supportedCultures);
+
+// app.UseRequestLocalization(localizationOptions);
 // 2. HTTP İstek Hattını (Pipeline) Yapılandır
 
     // Geliştirme aşamasında Swagger arayüzünü açar
@@ -53,6 +71,7 @@ app.UseHttpsRedirection();
 
 // Controller'ları URL'ler ile eşleştir (Routing)
 app.MapControllers();
+
 
 // Uygulamayı başlat ve dinlemeye geç
 // Uygulamanın hangi portu dinleyeceğini buraya elle yazıyoruz
