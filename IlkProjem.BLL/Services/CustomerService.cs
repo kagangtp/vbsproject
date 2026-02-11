@@ -2,9 +2,9 @@ using IlkProjem.DAL.Repositories;
 using IlkProjem.Core.Models;
 using IlkProjem.Core.Dtos.CustomerDtos;
 using IlkProjem.BLL.Interfaces;
-using IlkProjem.Core.Utilities.Results; // Ensure this matches your namespace
+using IlkProjem.Core.Utilities.Results;
 using Microsoft.Extensions.Localization;
-using IlkProjem.Core.Resources; // Pointing to Core now
+using IlkProjem.Core.Resources;
 
 namespace IlkProjem.BLL.Services;
 
@@ -31,7 +31,13 @@ public class CustomerService : ICustomerService
     public async Task<IDataResult<List<CustomerReadDto>>> GetAllCustomers()
     {
         var customers = await _repository.GetAllAsync();
-        var data = customers.Select(c => new CustomerReadDto { /* mapping */ }).ToList();
+        var data = customers.Select(c => new CustomerReadDto { 
+            Id = c.Id, 
+            Name = c.Name, 
+            Email = c.Email, 
+            Balance = c.Balance,
+            CreatedAt = c.CreatedAt
+        }).ToList();
 
         return new SuccessDataResult<List<CustomerReadDto>>(data, _localizer["CustomersListed"]);
     }
@@ -42,7 +48,13 @@ public class CustomerService : ICustomerService
         if (customer == null) 
             return new ErrorDataResult<CustomerReadDto>(_localizer["CustomerNotFound"]);
 
-        var data = new CustomerReadDto { /* mapping */ };
+        var data = new CustomerReadDto { 
+            Id = customer.Id, 
+            Name = customer.Name, 
+            Email = customer.Email, 
+            Balance = customer.Balance,
+            CreatedAt = customer.CreatedAt
+        };
         return new SuccessDataResult<CustomerReadDto>(data);
     }
 
@@ -51,8 +63,11 @@ public class CustomerService : ICustomerService
         var existingCustomer = await _repository.GetByIdAsync(updateDto.Id);
         if (existingCustomer == null) 
             return new ErrorResult(_localizer["CustomerNotFound"]);
+        
+        existingCustomer.Name = updateDto.Name;
+        existingCustomer.Email = updateDto.Email;
+        existingCustomer.Balance = updateDto.Balance;
 
-        // ... update logic ...
         await _repository.UpdateAsync(existingCustomer);
         return new SuccessResult(_localizer["CustomerUpdated"]);
     }

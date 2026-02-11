@@ -9,7 +9,6 @@ public static class CustomerSeeder
     {
         var customerFaker = new Faker<Customer>("tr")
             // Id'yi veritabanı vereceği için buraya hiç yazmıyoruz.
-            
             .RuleFor(c => c.Name, f => f.Name.FullName())
             .RuleFor(c => c.Email, (f, c) => f.Internet.Email(c.Name))
             

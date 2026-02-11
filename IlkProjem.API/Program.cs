@@ -4,11 +4,75 @@ using IlkProjem.DAL.Data;
 using IlkProjem.BLL.Services;
 using IlkProjem.DAL.Repositories;
 using IlkProjem.BLL.Interfaces;
+using IlkProjem.API.Filters;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Microsoft.Extensions.Localization;
+using IlkProjem.Core.Resources;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi;
-using Microsoft.AspNetCore.Mvc.Filters;
-//using IlkProjem.API.Filters.Swagger;
+using System.Text.Json.Nodes;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//
+// ✅ Localization
+//
+builder.Services.AddLocalization();
+
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var cultures = new[] { "en-US", "tr-TR" };
+
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedCultures = Array.ConvertAll(cultures, c => new CultureInfo(c));
+    options.SupportedUICultures = Array.ConvertAll(cultures, c => new CultureInfo(c));
+
+    options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
+});
+//
+// ✅ OpenAPI
+//
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, ct) =>
+    {
+        // 1. Localize the Title/Description as you did before
+        var localizer = context.ApplicationServices.GetRequiredService<IStringLocalizer<Program>>();
+        document.Info.Title = localizer["ApiTitle"];
+
+        // 2. Add the Header to every operation (The v2.x "Filter" equivalent)
+        foreach (var path in document.Paths.Values)
+        {
+            //
+            // Might change later
+            //Forging the "Accept-Language" header into every operation for Swagger UI
+            foreach (var operation in path.Operations.Values)
+            {
+                operation.Parameters ??= [];
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "Accept-Language",
+                    In = ParameterLocation.Header,
+                    Required = false,
+                    Schema = new OpenApiSchema
+                    {
+                        Type = JsonSchemaType.String,
+                        Enum = [
+                            JsonValue.Create("en-US"),
+                            JsonValue.Create("tr-TR")
+                        ],
+                        Default = JsonValue.Create("en-US")
+                    }
+                });
+            }
+        }
+        return Task.CompletedTask;
+    });
+});
+
+
 
 // 1. Servisleri Konteynera Ekle
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -29,12 +93,10 @@ builder.Services.AddControllers()
 
 // Swagger/OpenAPI desteği (Test arayüzü için)
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-// builder.Services.AddSwaggerGen(options =>
-// {
-//     // This line links the class you just fixed!
-//     options.OperationFilter<IlkProjem.API.Filters.Swagger.LanguageHeaderFilter>();
-// });
+builder.Services.AddSwaggerGen(c =>
+{
+    c.OperationFilter<AcceptLanguageHeaderFilter>();
+});
 
 builder.Services.AddCors(options =>
 {
@@ -44,22 +106,22 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
-builder.Services.AddLocalization();
-
 var app = builder.Build();
 
-// var supportedCultures = new[] { "tr-TR", "en-US" };
-// var localizationOptions = new RequestLocalizationOptions()
-//     .SetDefaultCulture(supportedCultures[0])
-//     .AddSupportedCultures(supportedCultures)
-//     .AddSupportedUICultures(supportedCultures);
-
-// app.UseRequestLocalization(localizationOptions);
 // 2. HTTP İstek Hattını (Pipeline) Yapılandır
+
+    var locOptions = app.Services
+    .GetRequiredService<IOptions<RequestLocalizationOptions>>();
+
+app.UseRequestLocalization(locOptions.Value);
 
     // Geliştirme aşamasında Swagger arayüzünü açar
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/openapi/v1.json?culture=en-US", "English");
+    c.SwaggerEndpoint("/openapi/v1.json?culture=tr-TR", "Türkçe");
+});
 
 
 app.UseRouting(); // Önce yönlendirme
@@ -87,6 +149,9 @@ using (var scope = app.Services.CreateScope())
         context.SaveChanges();
     }
 }
+
+app.MapOpenApi();
+
 
 
 app.Run("http://localhost:5005");
