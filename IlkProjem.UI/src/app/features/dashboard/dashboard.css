@@ -6,9 +6,26 @@
 }
 
 .header-section {
+  display: flex;             /* Alignment magic */
+  justify-content: space-between; 
+  align-items: center;       /* Centers everything vertically */
+  gap: 24px;
   margin-bottom: 32px;
   border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 20px;
+  padding-bottom: 24px;
+}
+
+/* Ensure title doesn't take too much space */
+.title-area {
+  flex: 0 1 auto; 
+}
+
+.header-section h1 {
+  color: #0f172a;
+  font-size: 1.875rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 0; /* Reduced to align better with search bar */
 }
 
 .header-section h1 {
@@ -134,6 +151,14 @@
   font-size: 1rem;
 }
 
+.add-btn {
+  flex-shrink: 0; /* Prevents button from getting squashed */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap; /* Keeps text on one line */
+}
+
 .btn-icon.edit:hover { 
   background: #e0e7ff; 
   color: #4338ca; 
@@ -230,4 +255,54 @@
     gap: 16px;
     padding: 24px;
   }
+}
+
+/* --- 8. ARAMA KUTUSU (GÜNCEL) --- */
+.search-container {
+  flex: 1;           /* Takes up the middle space */
+  display: flex;
+  justify-content: center; 
+  max-width: 500px;  /* Slightly wider for better balance */
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: white;
+  width: 100%;
+  padding: 6px 6px 6px 16px;
+  border-radius: 14px; /* Matches your list-card radius */
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+}
+
+.search-box:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 8px 0;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.btn-search {
+  background-color: #f1f5f9; /* Slate-100 */
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-search:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
 }

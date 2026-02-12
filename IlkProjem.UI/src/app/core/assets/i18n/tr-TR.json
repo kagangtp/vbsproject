@@ -1,0 +1,37 @@
+{
+  "SIDEBAR": {
+    "DASHBOARD": "Dashboard",
+    "CUSTOMERS": "Customers",
+    "ACCOUNTS": "Accounts",
+    "TRANSACTIONS": "Transactions",
+    "SETTINGS": "Settings"
+  },
+  "DASHBOARD_PAGE": {
+    "TITLE": "Müşteri Yönetimi",
+    "SUBTITLE": "Sistemde kayıtlı müşterilerin listesi.",
+    "SEARCH_PLACEHOLDER": "Müşteri ismi veya e-postası ara...",
+    "SEARCH_BUTTON": "Ara",
+    "ADD_BUTTON": "Yeni Müşteri Ekle"
+  },
+  "TABLE_HEADERS": {
+    "ID": "ID",
+    "NAME": "MÜŞTERİ ADI",
+    "EMAIL": "E-POSTA",
+    "BALANCE": "BAKİYE",
+    "REGISTER_DATE": "KAYIT TARİHİ",
+    "ACTIONS": "İŞLEMLER"
+  },
+  "MODALS": {
+    "EDIT_TITLE": "Müşteriyi Düzenle",
+    "ADD_TITLE": "✨ Yeni Müşteri Ekle",
+    "NAME_LABEL": "Ad Soyad",
+    "EMAIL_LABEL": "E-posta Adresi",
+    "BALANCE_LABEL": "Bakiye (TRY)",
+    "SAVE_CHANGES": "Değişiklikleri Kaydet",
+    "SAVE_CUSTOMER": "Müşteriyi Kaydet",
+    "CANCEL": "Vazgeç",
+    "NAME_ERROR": "Geçerli bir isim girmelisiniz (Min 3 karakter).",
+    "EMAIL_ERROR": "Lütfen geçerli bir e-posta adresi giriniz."
+  },
+  "EMPTY_STATE": "Görüntülenecek müşteri bulunamadı."
+}

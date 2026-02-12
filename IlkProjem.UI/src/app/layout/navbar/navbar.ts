@@ -8,5 +8,12 @@ import { Component, inject } from '@angular/core';
   styleUrl: './navbar.css'
 })
 export class Navbar {
+  changeLanguage(lang: string) {
+  // 1. Update the 'language' key in Local Storage
+  localStorage.setItem('language', lang);
+
+  // 2. Reload the page to ensure the Interceptor picks up the new header
+  window.location.reload();
+}
 
 }

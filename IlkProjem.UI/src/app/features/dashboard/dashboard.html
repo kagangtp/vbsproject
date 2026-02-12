@@ -1,25 +1,37 @@
 <div class="dashboard-wrapper">
   <div class="header-section">
-  <div class="title-area">
-    <h1>Müşteri Yönetimi</h1>
-    <p>Sistemde kayıtlı müşterilerin listesi.</p>
+    <div class="title-area">
+      <h1>{{ 'DASHBOARD_PAGE.TITLE' | translate }}</h1>
+      <p>{{ 'DASHBOARD_PAGE.SUBTITLE' | translate }}</p>
+    </div>
+
+    <div class="search-container">
+      <div class="search-box">
+        <input #searchInput type="text" 
+               [placeholder]="'DASHBOARD_PAGE.SEARCH_PLACEHOLDER' | translate" 
+               (input)="onSearchInput($event)">
+        <button class="btn-search" (click)="executeSearch(searchInput.value)">
+          {{ 'DASHBOARD_PAGE.SEARCH_BUTTON' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <button class="btn-primary add-btn" (click)="onAdd()">
+      <span>+</span> {{ 'DASHBOARD_PAGE.ADD_BUTTON' | translate }}
+    </button>
   </div>
-  <button class="btn-primary add-btn" (click) = "onAdd()">
-    <span>+</span> Yeni Müşteri Ekle
-  </button>
-</div>
 
   <div class="customer-list-container">
     <div class="list-header">
-      <span class="col-id">ID</span>
-      <span class="col-name">Müşteri Adı</span>
-      <span class="col-email">E-posta</span>
-      <span class="col-balance text-end">Bakiye</span>
-      <span class="col-date">Kayıt Tarihi</span>
-      <span class="col-actions text-center">İşlemler</span>
+      <span class="col-id">{{ 'TABLE_HEADERS.ID' | translate }}</span>
+      <span class="col-name">{{ 'TABLE_HEADERS.NAME' | translate }}</span>
+      <span class="col-email">{{ 'TABLE_HEADERS.EMAIL' | translate }}</span>
+      <span class="col-balance text-end">{{ 'TABLE_HEADERS.BALANCE' | translate }}</span>
+      <span class="col-date">{{ 'TABLE_HEADERS.REGISTER_DATE' | translate }}</span>
+      <span class="col-actions text-center">{{ 'TABLE_HEADERS.ACTIONS' | translate }}</span>
     </div>
 
-    @for (customer of customers; track customer.id) {
+    @for (customer of displayCustomers; track customer.id) {
       <div class="list-card">
         <div class="col-id">
           <span class="id-badge">#{{ customer.id }}</span>
@@ -32,21 +44,21 @@
         </div>
         <div class="col-balance text-end">
           <span class="balance-amount" [class.negative]="customer.balance < 0">
-            {{ customer.balance | currency:'TRY':'symbol-narrow':'1.2-2' }}
+            {{ customer.balance | currency:'':'symbol-narrow':'1.2-2' }}
           </span>
         </div>
         <div class="col-date">
           <span class="date-text">{{ customer.createdAt | date:'dd MMM yyyy' }}</span>
         </div>
         <div class="col-actions text-center">
-          <button class="btn-icon edit" (click)="onEdit(customer)" title="Düzenle">✏️</button>
+          <button class="btn-icon edit" (click)="onEdit(customer)" [title]="'MODALS.EDIT_TITLE' | translate">✏️</button>
           <button class="btn-icon delete" (click)="onDelete(customer.id)" title="Sil">🗑️</button>
         </div>
       </div>
     } @empty {
       <div class="empty-state">
         <div class="empty-icon">📁</div>
-        <p>Görüntülenecek müşteri bulunamadı.</p>
+        <p>{{ 'EMPTY_STATE' | translate }}</p>
       </div>
     }
   </div>
@@ -56,42 +68,40 @@
   <div class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Müşteriyi Düzenle</h2>
+        <h2>{{ 'MODALS.EDIT_TITLE' | translate }}</h2>
         <button class="btn-close" (click)="closeModal()">×</button>
       </div>
       
       <form [formGroup]="updateForm" (ngSubmit)="onUpdate()">
         <div class="form-body">
           <div class="form-group">
-            <label for="name">Ad Soyad</label>
+            <label for="name">{{ 'MODALS.NAME_LABEL' | translate }}</label>
             <input id="name" type="text" formControlName="name" 
-                   [class.error]="updateForm.get('name')?.invalid && updateForm.get('name')?.touched"
-                   placeholder="İsim giriniz">
+                   [class.error]="updateForm.get('name')?.invalid && updateForm.get('name')?.touched">
             @if (updateForm.get('name')?.invalid && updateForm.get('name')?.touched) {
-              <small class="error-msg">Geçerli bir isim girmelisiniz (Min 3 karakter).</small>
+              <small class="error-msg">{{ 'MODALS.NAME_ERROR' | translate }}</small>
             }
           </div>
           
           <div class="form-group">
-            <label for="email">E-posta Adresi</label>
+            <label for="email">{{ 'MODALS.EMAIL_LABEL' | translate }}</label>
             <input id="email" type="email" formControlName="email" 
-                   [class.error]="updateForm.get('email')?.invalid && updateForm.get('email')?.touched"
-                   placeholder="ornek@mail.com">
+                   [class.error]="updateForm.get('email')?.invalid && updateForm.get('email')?.touched">
             @if (updateForm.get('email')?.invalid && updateForm.get('email')?.touched) {
-              <small class="error-msg">Lütfen geçerli bir e-posta adresi giriniz.</small>
+              <small class="error-msg">{{ 'MODALS.EMAIL_ERROR' | translate }}</small>
             }
           </div>
           
           <div class="form-group">
-            <label for="balance">Bakiye (TRY)</label>
-            <input id="balance" type="number" formControlName="balance" placeholder="0.00">
+            <label for="balance">{{ 'MODALS.BALANCE_LABEL' | translate }}</label>
+            <input id="balance" type="number" formControlName="balance">
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn-secondary" (click)="closeModal()">Vazgeç</button>
+          <button type="button" class="btn-secondary" (click)="closeModal()">{{ 'MODALS.CANCEL' | translate }}</button>
           <button type="submit" class="btn-primary" [disabled]="updateForm.invalid">
-            Değişiklikleri Kaydet
+            {{ 'MODALS.SAVE_CHANGES' | translate }}
           </button>
         </div>
       </form>
@@ -103,24 +113,24 @@
   <div class="modal-backdrop" (click)="isAddModalOpen = false">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h2>✨ Yeni Müşteri Ekle</h2>
+        <h2>{{ 'MODALS.ADD_TITLE' | translate }}</h2>
         <button class="btn-close" (click)="isAddModalOpen = false">×</button>
       </div>
       
       <form [formGroup]="updateForm" (ngSubmit)="onCreate()">
         <div class="form-body">
           <div class="form-group">
-            <label>Ad Soyad</label>
-            <input type="text" formControlName="name" placeholder="Tam isim">
+            <label>{{ 'MODALS.NAME_LABEL' | translate }}</label>
+            <input type="text" formControlName="name">
           </div>
           <div class="form-group">
-            <label>E-posta</label>
-            <input type="email" formControlName="email" placeholder="email@example.com">
+            <label>{{ 'MODALS.EMAIL_LABEL' | translate }}</label>
+            <input type="email" formControlName="email">
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-secondary" (click)="isAddModalOpen = false">Vazgeç</button>
-          <button type="submit" class="btn-primary" [disabled]="updateForm.invalid">Müşteriyi Kaydet</button>
+          <button type="button" class="btn-secondary" (click)="isAddModalOpen = false">{{ 'MODALS.CANCEL' | translate }}</button>
+          <button type="submit" class="btn-primary" [disabled]="updateForm.invalid">{{ 'MODALS.SAVE_CUSTOMER' | translate }}</button>
         </div>
       </form>
     </div>

@@ -1,0 +1,37 @@
+{
+  "SIDEBAR": {
+    "DASHBOARD": "Dashboard",
+    "CUSTOMERS": "Customers",
+    "ACCOUNTS": "Accounts",
+    "TRANSACTIONS": "Transactions",
+    "SETTINGS": "Settings"
+  },
+  "DASHBOARD_PAGE": {
+    "TITLE": "Customer Management",
+    "SUBTITLE": "List of customers registered in the system.",
+    "SEARCH_PLACEHOLDER": "Search customer name or email...",
+    "SEARCH_BUTTON": "Search",
+    "ADD_BUTTON": "Add New Customer"
+  },
+  "TABLE_HEADERS": {
+    "ID": "ID",
+    "NAME": "CUSTOMER NAME",
+    "EMAIL": "EMAIL",
+    "BALANCE": "BALANCE",
+    "REGISTER_DATE": "REGISTRATION DATE",
+    "ACTIONS": "ACTIONS"
+  },
+  "MODALS": {
+    "EDIT_TITLE": "Edit Customer",
+    "ADD_TITLE": "✨ Add New Customer",
+    "NAME_LABEL": "Full Name",
+    "EMAIL_LABEL": "Email Address",
+    "BALANCE_LABEL": "Balance (TRY)",
+    "SAVE_CHANGES": "Save Changes",
+    "SAVE_CUSTOMER": "Save Customer",
+    "CANCEL": "Cancel",
+    "NAME_ERROR": "You must enter a valid name (Min 3 characters).",
+    "EMAIL_ERROR": "Please enter a valid email address."
+  },
+  "EMPTY_STATE": "No customers found to display."
+}
