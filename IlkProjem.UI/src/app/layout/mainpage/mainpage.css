@@ -2,14 +2,14 @@
 
 .main-layout {
   display: grid;
-  /* İki sütun: Sidebar (260px) ve İçerik (Geri kalanı) */
+  /* Sidebar stays at 260px, Content takes the rest */
   grid-template-columns: 260px 1fr;
-  /* İki satır: Navbar (64px) ve Ana Alan (Geri kalanı) */
-  grid-template-rows: 64px 1fr;
-  /* Navbar artık her iki sütunu da kaplıyor (1 / -1) */
+  /* Navbar (64px), Content (Flexible), Footer (Auto-sized) */
+  grid-template-rows: 64px 1fr auto; 
   grid-template-areas: 
     "navbar navbar"
-    "sidebar content";
+    "sidebar content"
+    "sidebar footer"; /* Footer stays in the content column */
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -17,7 +17,7 @@
 
 app-navbar {
   grid-area: navbar;
-  z-index: 100; /* Navbar her zaman en üstte */
+  z-index: 100;
 }
 
 app-sidebar {
@@ -27,7 +27,13 @@ app-sidebar {
 
 .content-area {
   grid-area: content;
-  overflow-y: auto;
+  overflow-y: auto; /* This area scrolls independently */
   background-color: #f8fafc;
   padding: 24px;
+}
+
+app-footer {
+  grid-area: footer;
+  /* Optional: keeps footer clean and separated from content */
+  background-color: #ffffff; 
 }

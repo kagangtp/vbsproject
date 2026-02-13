@@ -1,4 +1,5 @@
 using IlkProjem.Core.Models;
+using IlkProjem.Core.Specifications;
 using IlkProjem.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,5 +48,19 @@ public class CustomerRepository : ICustomerRepository
         
         int affectedRows = await _context.SaveChangesAsync();
         return affectedRows > 0;
+    }
+
+    // NEW: This is where IQueryable + Specification come together
+    public async Task<List<Customer>> ListAsync(ISpecification<Customer> spec)
+    {
+        // Step 1: Start with ALL customers as an IQueryable (no SQL yet!)
+        var query = _context.Customers.AsQueryable();
+
+        // Step 2: Let the SpecificationEvaluator apply the filters/sorting/paging
+        //         This STILL doesn't execute SQL — just builds the query
+        query = SpecificationEvaluator<Customer>.GetQuery(query, spec);
+
+        // Step 3: NOW execute the SQL and get the results
+        return await query.ToListAsync();
     }
 }

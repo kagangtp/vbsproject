@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // 1. Bunu ekle
+import { HttpClient, HttpParams } from '@angular/common/http'; // 1. Bunu ekle
 import { Observable } from 'rxjs'; // 2. Bunu ekle
 import { Customer } from '../models/customer'; // Interface yolun
 import { CustomerUpdateDto } from '../models/customer-update-dto';
@@ -7,6 +7,7 @@ import { CustomerDeleteDto } from '../models/customer-delete-dto';
 import { ListResponseModel } from '../models/responses/list-response-model';
 import { SingleResponseModel } from '../models/responses/single-response-model';
 import { ResponseModel } from '../models/responses/response-model';
+import { CustomerParams } from '../models/params/customer-params';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,20 @@ export class CustomerService {
   private apiUrl = 'http://localhost:5005/api/Customer'; // 4. Backend portunu buraya yaz
 
   // "Getir" - Now expects the ListResponseModel wrapper
-  getCustomers(): Observable<ListResponseModel<Customer>> {
-    return this.http.get<ListResponseModel<Customer>>(this.apiUrl);
-  }
+  getCustomers(params: CustomerParams): Observable<ListResponseModel<Customer>> {
+    let queryParams = new HttpParams()
+      .set('sort', params.sort)
+      .set('pageSize', params.pageSize.toString())
+      .set('lastId', params.lastId.toString());
+
+    // Only add the search term to the URL if the user actually typed something
+    if (params.searchTerm && params.searchTerm.trim() !== '') {
+      queryParams = queryParams.set('search', params.searchTerm);
+    }
+
+    // This sends the request with the query string attached
+    return this.http.get<ListResponseModel<Customer>>(this.apiUrl, { params: queryParams });
+    }
 
   // "GetirById"
   getCustomerById(id: number): Observable<SingleResponseModel<Customer>> {

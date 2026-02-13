@@ -306,3 +306,60 @@
   background-color: #e2e8f0;
   color: #0f172a;
 }
+
+/* --- 9. MODERN PAGINATION CONTROLS --- */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #475569; /* Slate-600 */
+}
+
+/* Specific Style for NEXT (Primary Vibe) */
+.btn-next {
+  background: #6366f1; /* Indigo-500 */
+  color: white;
+  border: none;
+  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+}
+
+.btn-next:hover:not(:disabled) {
+  background: #4f46e5;
+  transform: translateX(4px); /* Subtle forward nudge */
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+}
+
+/* Specific Style for PREVIOUS (Secondary Vibe) */
+.btn-prev:hover:not(:disabled) {
+  background: #f1f5f9;
+  color: #1e293b;
+  transform: translateX(-4px); /* Subtle backward nudge */
+}
+
+/* Disabled State: Matches your Slate theme */
+.btn-pagination:disabled {
+  background: #f8fafc;
+  color: #cbd5e1;
+  border-color: #f1f5f9;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

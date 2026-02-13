@@ -62,6 +62,23 @@
       </div>
     }
   </div>
+
+<div class="pagination-container">
+  <button 
+    class="btn-pagination btn-prev" 
+    (click)="goPrevious()" 
+    [disabled]="history.length === 0">
+    <i class="fas fa-chevron-left"></i> PREVIOUS
+  </button>
+
+  <button 
+    class="btn-pagination btn-next" 
+    (click)="goNext()" 
+    [disabled]="displayCustomers.length < params.pageSize">
+    NEXT <i class="fas fa-chevron-right"></i>
+  </button>
+</div>
+
 </div>
 
 @if (isModalOpen) {

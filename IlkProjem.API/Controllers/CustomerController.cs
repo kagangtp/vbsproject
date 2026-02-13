@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using IlkProjem.Core.Dtos.CustomerDtos;
 using IlkProjem.BLL.Interfaces;
+using IlkProjem.Core.Models;
+using IlkProjem.Core.Dtos.SpecificationDtos;
 
 namespace IlkProjem.API.Controllers;
 
@@ -16,10 +18,17 @@ public class CustomerController : ControllerBase
     }
 
     // "Getir" - Tüm Liste
-    [HttpGet] 
-    public async Task<IActionResult> Get() 
+    // [HttpGet] 
+    // public async Task<IActionResult> Get() 
+    // {
+    //     var result = await _customerService.GetAllCustomers();
+    //     return result.Success ? Ok(result) : BadRequest(result);
+    // }
+
+    [HttpGet]
+    public async Task<IActionResult> GetCustomers([FromQuery] CustomerSpecParams custParams)
     {
-        var result = await _customerService.GetAllCustomers();
+        var result = await _customerService.GetCustomersAsync(custParams);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 

@@ -6,6 +6,7 @@ import { Customer } from '../../core/models/customer';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { CustomerParams } from '../../core/models/params/customer-params';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +25,17 @@ export class Dashboard implements OnInit,OnDestroy {
   updateForm!: FormGroup; // 4. Hata veren değişken tam olarak bu
   isModalOpen = false; 
   selectedCustomerId: number | null = null;
+
+  //params
+  params: CustomerParams = {
+    searchTerm: '',
+    sort: 'id', // Cursor pagination works best with 'id'
+    pageSize: 10,
+    lastId: 0, // Start from the very beginning
+    pageIndex: 0
+  };
+
+  history: number[] = [];
 
   private searchSubject = new Subject<string>();
   private searchSubscription?: Subscription;
@@ -54,15 +66,19 @@ export class Dashboard implements OnInit,OnDestroy {
   }
 
   loadCustomers() {
-    this.customerService.getCustomers().subscribe(response => {
+  // Pass the central params object to the service
+  this.customerService.getCustomers(this.params).subscribe(response => {
     if (response.success) {
-        this.customers = response.data;
-        this.displayCustomers = response.data; // FIX: Take the list out of the box
+      // For 100k records, we only show what the backend sends us
+      this.displayCustomers = response.data;
+      
+      // If you are doing "Load More" (Infinite Scroll):
+      // this.displayCustomers = [...this.displayCustomers, ...response.data];
     } else {
-        console.error(response.message); // Helpful for debugging
+      console.error(response.message);
     }
-});
-  }
+  });
+}
 
   onEdit(customer: Customer) {
     this.selectedCustomerId = customer.id;
@@ -158,19 +174,49 @@ onSearchInput(event: Event) {
 }
 
 executeSearch(searchTerm: string) {
-  // If search bar is empty, show the full original list
-  if (!searchTerm || searchTerm.trim() === '') {
-    this.displayCustomers = [...this.customers];
-    return;
+  this.params.searchTerm = searchTerm;
+  this.params.lastId = 0;
+  this.history = []; // Reset history on new search
+  this.loadCustomers();
+}
+//pagination with cursor
+loadMore() {
+  if (this.displayCustomers.length > 0) {
+    // Take the ID of the last item in the list
+    const lastItem = this.displayCustomers[this.displayCustomers.length - 1];
+    this.params.lastId = lastItem.id;
+
+    this.customerService.getCustomers(this.params).subscribe(response => {
+      if (response.success) {
+        // APPEND the new data to the existing list
+        this.displayCustomers = [...this.displayCustomers, ...response.data];
+      }
+    });
+    }
   }
 
-  const lowerTerm = searchTerm.toLowerCase();
+  goNext() {
+  if (this.displayCustomers.length > 0) {
+    // 1. Save current cursor to history so we can go back
+    this.history.push(this.params.lastId);
 
-  // We filter the ORIGINAL 'customers' array but assign the result to 'displayCustomers'
-  this.displayCustomers = this.customers.filter(c => 
-    c.name.toLowerCase().includes(lowerTerm) || 
-    c.email.toLowerCase().includes(lowerTerm)
-  );
+    // 2. Set the new cursor to the last ID on the current screen
+    const lastItem = this.displayCustomers[this.displayCustomers.length - 1];
+    this.params.lastId = lastItem.id;
+
+    this.loadCustomers();
+  }
+}
+
+goPrevious() {
+  if (this.history.length > 0) {
+    // 1. Pop the previous cursor from our history stack
+    const previousId = this.history.pop();
+    
+    // 2. Set lastId and reload
+    this.params.lastId = previousId ?? 0;
+    this.loadCustomers();
+  }
 }
 
 
