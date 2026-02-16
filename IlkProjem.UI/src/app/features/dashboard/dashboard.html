@@ -68,14 +68,14 @@
     class="btn-pagination btn-prev" 
     (click)="goPrevious()" 
     [disabled]="history.length === 0">
-    <i class="fas fa-chevron-left"></i> PREVIOUS
+    <i class="fas fa-chevron-left"></i> {{ 'DASHBOARD_PAGE.PREVIOUS_PAGE' | translate }}
   </button>
 
   <button 
     class="btn-pagination btn-next" 
     (click)="goNext()" 
     [disabled]="displayCustomers.length < params.pageSize">
-    NEXT <i class="fas fa-chevron-right"></i>
+    {{ 'DASHBOARD_PAGE.NEXT_PAGE' | translate }} <i class="fas fa-chevron-right"></i>
   </button>
 </div>
 

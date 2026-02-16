@@ -7,19 +7,17 @@
   </div>
 
   <div class="nav-right">
-    <div class="nav-right">
-  <div class="lang-dropdown">
-    <button class="dropbtn">🌐</button>
-    <div class="dropdown-content">
-      <a (click)="changeLanguage('tr-TR')">🇹🇷 Türkçe</a>
-      <a (click)="changeLanguage('en-US')">🇺🇸 English</a>
+    <div class="lang-dropdown">
+      <button class="dropbtn">🌐</button>
+      <div class="dropdown-content">
+        <a (click)="changeLanguage('tr-TR')">🇹🇷 Türkçe</a>
+        <a (click)="changeLanguage('en-US')">🇺🇸 English</a>
+      </div>
     </div>
-  </div>
-</div>
 
     <div class="user-info">
-      <span class="user-name">Kagan</span>
-      <div class="user-avatar">K</div>
+      <span class="user-name">{{ userName }}</span>
+      <div class="user-avatar">{{ userInitial }}</div>
     </div>
   </div>
 </nav>

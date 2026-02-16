@@ -1,19 +1,19 @@
 :host {
   display: block;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  margin: 0;
-  padding: 0;
 }
 
 .login-container {
   display: flex;
-  flex-direction: column; /* Üst üste diz: Önce Navbar, sonra içerik */
+  /* Kutuyu hem dikeyde hem yatayda tam ortalamak için kritik satırlar */
+  justify-content: center; 
+  align-items: center;     
+  
   min-height: 100vh;
+  width: 100vw;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .login-box {
@@ -23,186 +23,109 @@ body {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 440px;
-  animation: slideUp 0.5s ease-out;
+  /* Senin yazdığın şık animasyon */
+  animation: slideUp 0.5s ease-out; 
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Logo */
-.logo {
-  text-align: center;
-  margin-bottom: 2rem;
+/* Logo & Welcome kısımları aynı kalabilir */
+.logo { text-align: center; margin-bottom: 2rem; }
+.logo-icon { font-size: 4rem; display: block; margin-bottom: 0.5rem; }
+.logo-text { font-size: 2rem; font-weight: 700; color: #1e293b; margin: 0; }
+
+.welcome { text-align: center; margin-bottom: 2rem; }
+.welcome h2 { font-size: 1.75rem; font-weight: 700; color: #1e293b; }
+.welcome p { font-size: 0.95rem; color: #64748b; }
+
+/* Form elemanları ve buton tasarımı */
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+.form-group input { 
+  width: 100%; padding: 0.875rem 1rem; border: 2px solid #e2e8f0; 
+  border-radius: 8px; transition: all 0.2s; 
+}
+.form-group input:focus { border-color: #667eea; outline: none; }
+
+.btn-login {
+  width: 100%; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
 }
 
-.logo-icon {
-  font-size: 4rem;
+:host {
   display: block;
-  margin-bottom: 0.5rem;
 }
 
-.logo-text {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0;
-}
-
-/* Welcome */
-.welcome {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.welcome h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 0.5rem;
-}
-
-.welcome p {
-  font-size: 0.95rem;
-  color: #64748b;
-}
-
-/* Form */
-.login-form {
-  margin-bottom: 1.5rem;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-}
-
-.form-group input {
+.login-container {
+  display: flex;
+  justify-content: center; /* Yatayda ortalar */
+  align-items: center;     /* Dikeyde ortalar */
+  min-height: 100vh;
   width: 100%;
-  padding: 0.875rem 1rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.2s;
+  /* Beyaz sayfa sorununu çözen fixed gradient */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) no-repeat fixed;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.form-group input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+.login-box {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 420px;
+  animation: slideUp 0.6s ease-out;
 }
 
-.form-group input::placeholder {
-  color: #cbd5e1;
-}
-
-/* Form Options */
+/* Seçenekleri sağa ve sola yasla */
 .form-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  color: #64748b;
+  margin-bottom: 2rem;
   font-size: 0.9rem;
 }
 
-.checkbox input[type="checkbox"] {
-  width: auto;
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
   cursor: pointer;
 }
 
 .forgot-link {
-  color: #667eea;
+  color: #6366f1;
   text-decoration: none;
-  font-size: 0.9rem;
   font-weight: 500;
 }
 
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
-/* Login Button */
-.btn-login {
+/* Modern Buton Tasarımı */
+.btn-signin {
   width: 100%;
-  padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 14px;
+  background: #6366f1;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1.05rem;
+  border-radius: 12px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 }
 
-.btn-login:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+.btn-signin:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
 }
 
-.btn-login:active {
-  transform: translateY(0);
-}
-
-/* Footer */
-.login-footer {
-  text-align: center;
-  padding-top: 1.5rem;
-  border-top: 1px solid #e2e8f0;
-}
-
-.login-footer p {
-  color: #64748b;
-  font-size: 0.9rem;
-}
-
-.login-footer a {
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.login-footer a:hover {
-  text-decoration: underline;
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .login-box {
-    padding: 2rem 1.5rem;
-  }
-
-  .logo-icon {
-    font-size: 3rem;
-  }
-
-  .logo-text {
-    font-size: 1.5rem;
-  }
-
-  .welcome h2 {
-    font-size: 1.5rem;
-  }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

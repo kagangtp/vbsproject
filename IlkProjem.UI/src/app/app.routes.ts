@@ -2,24 +2,23 @@ import { Routes } from '@angular/router';
 import { Loginpage } from './layout/loginpage/loginpage';
 import { Dashboard } from './features/dashboard/dashboard';
 import { Mainpage } from './layout/mainpage/mainpage';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   { path: 'login', component: Loginpage },
 
-  // 2. Durak: Ana Uygulama Grubu (Prefix: /mainpage)
   {
     path: 'mainpage',
-    component: Mainpage, // Burası senin Navbar ve Sidebar'ının olduğu iskelet
+    component: Mainpage,
+    canActivate: [authGuard], // 🔐 Ana kapıya kilidi vurduk; artık bypass imkansız!
     children: [
-      // localhost/mainpage/dashboard
       { path: 'dashboard', component: Dashboard },
       
-      // Sadece /mainpage yazılırsa otomatik dashboard'a at
+      // Buraya Customers, Accounts vb. eklediğinde onlar da otomatik korunur
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
 
-  // Varsayılan Yönlendirmeler
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, // Site açılınca login'e git
-  { path: '**', redirectTo: 'login' } // Hatalı URL yazılırsa login'e at
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' }
 ];

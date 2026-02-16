@@ -1,17 +1,12 @@
 {
-  "SIDEBAR": {
-    "DASHBOARD": "Dashboard",
-    "CUSTOMERS": "Customers",
-    "ACCOUNTS": "Accounts",
-    "TRANSACTIONS": "Transactions",
-    "SETTINGS": "Settings"
-  },
   "DASHBOARD_PAGE": {
     "TITLE": "Müşteri Yönetimi",
     "SUBTITLE": "Sistemde kayıtlı müşterilerin listesi.",
     "SEARCH_PLACEHOLDER": "Müşteri ismi veya e-postası ara...",
     "SEARCH_BUTTON": "Ara",
-    "ADD_BUTTON": "Yeni Müşteri Ekle"
+    "ADD_BUTTON": "Yeni Müşteri Ekle",
+    "NEXT_PAGE": "Sonraki",
+    "PREVIOUS_PAGE": "Önceki"
   },
   "TABLE_HEADERS": {
     "ID": "ID",
@@ -33,5 +28,14 @@
     "NAME_ERROR": "Geçerli bir isim girmelisiniz (Min 3 karakter).",
     "EMAIL_ERROR": "Lütfen geçerli bir e-posta adresi giriniz."
   },
-  "EMPTY_STATE": "Görüntülenecek müşteri bulunamadı."
+  "EMPTY_STATE": "Görüntülenecek müşteri bulunamadı.",
+  "SIDEBAR": {
+    "DASHBOARD": "Panel",
+    "CUSTOMERS": "Müşteriler",
+    "ACCOUNTS": "Hesaplar",
+    "TRANSACTIONS": "İşlemler",
+    "SETTINGS": "Ayarlar",
+    "LOGOUT": "Çıkış Yap"
+  }
+
 }

@@ -1,36 +1,35 @@
-<aside class="sidebar-container">
-  <div class="sidebar-header">
-    
-  </div>
-
-  <nav class="sidebar-nav">
+<div class="sidebar-container">
+  <div class="sidebar-nav">
     <a routerLink="/mainpage/dashboard" routerLinkActive="active" class="nav-link">
-      <i class="icon">📊</i>
-      <span class="link-text">Dashboard</span>
+      <span class="icon">📊</span>
+      <span>{{ 'SIDEBAR.DASHBOARD' | translate }}</span>
     </a>
+
     <a routerLink="/mainpage/customers" routerLinkActive="active" class="nav-link">
-      <i class="icon">👥</i>
-      <span class="link-text">Customers</span>
+      <span class="icon">👥</span>
+      <span>{{ 'SIDEBAR.CUSTOMERS' | translate }}</span>
     </a>
+
     <a routerLink="/mainpage/accounts" routerLinkActive="active" class="nav-link">
-      <i class="icon">💳</i>
-      <span class="link-text">Accounts</span>
+      <span class="icon">💳</span>
+      <span>{{ 'SIDEBAR.ACCOUNTS' | translate }}</span>
     </a>
+
     <a routerLink="/mainpage/transactions" routerLinkActive="active" class="nav-link">
-      <i class="icon">💰</i>
-      <span class="link-text">Transactions</span>
+      <span class="icon">💰</span>
+      <span>{{ 'SIDEBAR.TRANSACTIONS' | translate }}</span>
     </a>
-    <div class="nav-divider"></div>
-    <a routerLink="/mainpage/settings" routerLinkActive="active" class="nav-link">
-      <i class="icon">⚙️</i>
-      <span class="link-text">Settings</span>
-    </a>
-  </nav>
+  </div>
 
   <div class="sidebar-footer">
-    <button class="logout-button">
-      <i class="icon">🚪</i>
-      <span class="link-text">Çıkış Yap</span>
+    <a routerLink="/mainpage/settings" class="nav-link">
+      <span class="icon">⚙️</span>
+      <span>{{ 'SIDEBAR.SETTINGS' | translate }}</span>
+    </a>
+    
+    <button (click)="onLogout()" class="logout-button">
+      <span class="icon">🚪</span>
+      <span>{{ 'SIDEBAR.LOGOUT' | translate }}</span>
     </button>
   </div>
-</aside>
+</div>

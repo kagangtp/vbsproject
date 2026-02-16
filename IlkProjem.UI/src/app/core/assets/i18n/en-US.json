@@ -4,14 +4,17 @@
     "CUSTOMERS": "Customers",
     "ACCOUNTS": "Accounts",
     "TRANSACTIONS": "Transactions",
-    "SETTINGS": "Settings"
+    "SETTINGS": "Settings",
+    "LOGOUT": "Logout"
   },
   "DASHBOARD_PAGE": {
     "TITLE": "Customer Management",
     "SUBTITLE": "List of customers registered in the system.",
     "SEARCH_PLACEHOLDER": "Search customer name or email...",
     "SEARCH_BUTTON": "Search",
-    "ADD_BUTTON": "Add New Customer"
+    "ADD_BUTTON": "Add New Customer",
+    "NEXT_PAGE": "Next",
+    "PREVIOUS_PAGE": "Previous"
   },
   "TABLE_HEADERS": {
     "ID": "ID",

@@ -9,13 +9,16 @@
   background-color: #ffffff;
   border-right: 1px solid #f0f0f0;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* İçeriği dikey sıralar */
   transition: all 0.3s ease;
+  position: sticky;
+  top: 0;
 }
 
-/* Header & Logo */
+/* 1. Header & Logo Bölümü */
 .sidebar-header {
   padding: 32px 24px;
+  flex-shrink: 0; /* Header'ın boyutu asla küçülmez */
 }
 
 .logo-box {
@@ -32,13 +35,23 @@
   letter-spacing: -0.5px;
 }
 
-/* Navigasyon Linkleri */
+/* 2. Orta Navigasyon (Esnek Bölge) */
 .sidebar-nav {
-  flex: 1;
+  flex: 1; /* Kalan tüm alanı kaplar ve footer'ı aşağı iter */
   padding: 0 12px;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow-y: auto; /* İçerik taşarsa footer'ı itmek yerine kendi içinde kayar */
+}
+
+/* Profesyonel Scrollbar Görünümü */
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: #edf2f7;
+  border-radius: 10px;
 }
 
 .nav-link {
@@ -59,8 +72,8 @@
 
 /* Aktif Sayfa Stili */
 .nav-link.active {
-  background-color: #f0f5ff; /* Hafif mavi arka plan */
-  color: #3182ce; /* Aktif yazı rengi */
+  background-color: #f0f5ff;
+  color: #3182ce;
   font-weight: 600;
 }
 
@@ -86,13 +99,16 @@
 .nav-divider {
   height: 1px;
   background-color: #edf2f7;
-  margin: 16px 16px;
+  margin: 16px 12px;
+  flex-shrink: 0;
 }
 
-/* Footer & Logout */
+/* 3. Footer & Logout Bölümü (Sabit En Alt) */
 .sidebar-footer {
   padding: 24px 12px;
   border-top: 1px solid #f7fafc;
+  flex-shrink: 0; /* Footer boyutu asla değişmez */
+  background-color: #ffffff;
 }
 
 .logout-button {
@@ -103,14 +119,35 @@
   padding: 12px 16px;
   border: none;
   background: transparent;
-  color: #e53e3e; /* Kırmızı çıkış rengi */
+  color: #e53e3e; /* Kritik: Çıkış kırmızısı */
   cursor: pointer;
   border-radius: 12px;
   font-size: 0.95rem;
-  font-weight: 500;
-  transition: background 0.2s;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .logout-button:hover {
   background-color: #fff5f5;
+  color: #c53030;
+}
+
+.logout-button:active {
+  transform: scale(0.95);
+}
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sidebar-container {
+  width: 260px;
+  /* 100vh yerine 100% yapıyoruz ki 
+     parent grid'in (100vh - 64px) alanına sığsın */
+  height: 100%; 
+  background-color: #ffffff;
+  border-right: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
 }
