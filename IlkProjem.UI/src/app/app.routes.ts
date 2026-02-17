@@ -3,9 +3,17 @@ import { Loginpage } from './layout/loginpage/loginpage';
 import { Dashboard } from './features/dashboard/dashboard';
 import { Mainpage } from './layout/mainpage/mainpage';
 import { authGuard } from './core/guards/auth-guard';
+import { RegistrationPage } from './layout/registrationpage/registrationpage';
+import { loginGuard } from './core/guards/login-guard';
 
 export const routes: Routes = [
-  { path: 'login', component: Loginpage },
+  { path: 'register', component: RegistrationPage },
+
+  { 
+    path: 'login', 
+    component: Loginpage, 
+    canActivate: [loginGuard] // 👈 Bunu ekledik
+  },
 
   {
     path: 'mainpage',

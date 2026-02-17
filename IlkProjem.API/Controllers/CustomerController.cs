@@ -3,9 +3,11 @@ using IlkProjem.Core.Dtos.CustomerDtos;
 using IlkProjem.BLL.Interfaces;
 using IlkProjem.Core.Models;
 using IlkProjem.Core.Dtos.SpecificationDtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IlkProjem.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CustomerController : ControllerBase
@@ -26,9 +28,9 @@ public class CustomerController : ControllerBase
     // }
 
     [HttpGet]
-    public async Task<IActionResult> GetCustomers([FromQuery] CustomerSpecParams custParams)
+    public async Task<IActionResult> GetCustomers([FromQuery] CustomerSpecParams custParams,CancellationToken ct)
     {
-        var result = await _customerService.GetCustomersAsync(custParams);
+        var result = await _customerService.GetCustomersAsync(custParams, ct);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 

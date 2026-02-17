@@ -1,21 +1,29 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../core/services/authService';
+import { Router, RouterModule } from '@angular/router'; // Router eklendi
+import { AuthService } from '../../core/services/authService'; 
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [TranslateModule,RouterModule],
+  standalone: true, // Standalone olduğunu belirtmeyi unutma
+  imports: [TranslateModule, RouterModule], // Şablon (HTML) için modül
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
   private authService = inject(AuthService);
+  
+  // Hata buradaydı: RouterModule yerine Router inject edilmeli
+  private router = inject(Router); 
 
   onLogout() {
-    // Servis içinde yazdığımız logout metodunu çağırıyoruz
-    // Bu metot hem token'ı silecek hem de yönlendirme yapacak
+    // 1. Servisteki temizlik operasyonunu başlat (Hem Local hem Session Storage temizlenir)
     this.authService.logout();
+    
+    // 2. Kullanıcıyı login sayfasına yönlendir
+    // Artık 'navigate' metodu Router üzerinde tanımlı olduğu için hata vermez
+    this.router.navigate(['/login']);
+    
+    console.log("Kullanıcı güvenli bir şekilde çıkış yaptı.");
   }
-
 }

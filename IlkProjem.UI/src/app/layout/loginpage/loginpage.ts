@@ -16,27 +16,49 @@ export class Loginpage {
 
     loginData = { email: '', password: '' };
   
+  // onLogin() {
+  //   this.authService.login(this.loginData).subscribe({
+  //     next: (response) => {
+  //       // 1. DataResult başarılı mı kontrol et
+  //       if (response.success) {
+  //         // 2. Token artık 'data' alanının içinde
+  //         const token = response.data;
+          
+  //         // 3. Servisindeki metodu kullanarak kaydet
+  //         this.authService.saveToken(token);
+          
+  //         // NOT: Backend'den 'user' bilgisi dönüyorsan response.data içinden alabilirsin
+  //         // Eğer token içinden parse edeceksen ilerde JWT Helper kullanabiliriz.
+          
+  //         // 4. Başarılıysa yönlendir
+  //         this.router.navigate(['/mainpage/dashboard']);
+  //       } else {
+  //         // Backend success: false dönerse mesajı göster
+  //         alert(response.message);
+  //       }
+  //     },
+  //     error: (err) => {
+  //       // Backend'den gelen hata mesajı (DataResult.Message)
+  //       const errorMsg = err.error?.message || "Giriş başarısız!"; 
+  //       alert(errorMsg); 
+  //     }
+  //   });
+  // }
+
+  rememberMe: boolean = false;
+
   onLogin() {
     this.authService.login(this.loginData).subscribe({
       next: (response) => {
-        // 1. Güvenlik anahtarını (Token) kaydet
-        localStorage.setItem('token', response.token);
-        
-        // 2. Kullanıcı bilgilerini kaydet (İsim, Soyisim vb.)
-        // Backend'den 'user' adında bir nesne geldiğini varsayıyoruz. 
-        // LocalStorage sadece metin kabul ettiği için JSON.stringify kullanıyoruz.
-        if (response.user) {
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
+        if (response.success) {
+          // Token ve rememberMe bilgisini birlikte gönderiyoruz
+          this.authService.saveToken(response.data, this.rememberMe);
+          
+          console.log(this.rememberMe ? "Kalıcı giriş yapıldı." : "Geçici giriş yapıldı.");
+          this.router.navigate(['/mainpage/dashboard']);
         }
-        
-        // 3. Başarılıysa yönlendir
-        this.router.navigate(['/mainpage/dashboard']);
       },
-      error: (err) => {
-        // Hata mesajı yönetimi
-        const msg = err.error?.message || "Bir hata oluştu"; 
-        alert("Giriş başarısız: " + msg); 
-      }
+      error: (err) => alert(err.error?.message || "Hata!")
     });
   }
 }

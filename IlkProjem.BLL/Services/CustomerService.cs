@@ -1,7 +1,6 @@
 using IlkProjem.DAL.Repositories;
 using IlkProjem.Core.Models;
 using IlkProjem.Core.Dtos.CustomerDtos;
-using IlkProjem.Core.Specifications;
 using IlkProjem.BLL.Interfaces;
 using IlkProjem.Core.Utilities.Results;
 using Microsoft.Extensions.Localization;
@@ -30,13 +29,13 @@ public class CustomerService : ICustomerService
         return new SuccessResult(_localizer["CustomerAdded"]); 
     }
 
-    public async Task<IDataResult<List<CustomerReadDto>>> GetCustomersAsync(CustomerSpecParams custParams)
+    public async Task<IDataResult<List<CustomerReadDto>>> GetCustomersAsync(CustomerSpecParams custParams, CancellationToken ct = default)
     {
         // 1. Create the Spec with the incoming params
         var spec = new CustomerCursorSpecification(custParams);
 
         // 2. The Repository uses the Spec to build the optimized IQueryable
-        var customers = await _repository.ListAsync(spec);
+        var customers = await _repository.ListAsync(spec, ct);
 
         // 3. Map entities to DTOs (same thing you do in GetCustomerById, but for a list)
         var customerDtos = customers.Select(c => new CustomerReadDto

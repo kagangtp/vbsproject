@@ -14,7 +14,11 @@ public class CustomerRepository : ICustomerRepository
         _context = context;
     }
 
-    public async Task<List<Customer>> GetAllAsync() => await _context.Customers.ToListAsync();
+    public async Task<List<Customer>> GetAllAsync(CancellationToken ct = default)
+    {
+        return await _context.Customers.ToListAsync(ct);
+    
+    }
 
     public async Task<Customer?> GetByIdAsync(int id) => await _context.Customers.FindAsync(id);
 
@@ -51,7 +55,7 @@ public class CustomerRepository : ICustomerRepository
     }
 
     // NEW: This is where IQueryable + Specification come together
-    public async Task<List<Customer>> ListAsync(ISpecification<Customer> spec)
+    public async Task<List<Customer>> ListAsync(ISpecification<Customer> spec, CancellationToken ct = default)
     {
         // Step 1: Start with ALL customers as an IQueryable (no SQL yet!)
         var query = _context.Customers.AsQueryable();
@@ -61,6 +65,6 @@ public class CustomerRepository : ICustomerRepository
         query = SpecificationEvaluator<Customer>.GetQuery(query, spec);
 
         // Step 3: NOW execute the SQL and get the results
-        return await query.ToListAsync();
+        return await query.ToListAsync(ct);
     }
 }

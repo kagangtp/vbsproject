@@ -1,16 +1,17 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../services/authService'; // Kendi dosya yoluna göre kontrol et
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const token = localStorage.getItem('token');
+  const authService = inject(AuthService); // Servisi inject ediyoruz
 
-  // Token varsa geçişe izin ver
-  if (token) {
+  // Artık hem local hem session kontrolünü servis üzerinden merkezi yapıyoruz
+  if (authService.isLoggedIn()) {
     return true;
   }
 
-  // Token yoksa girişe yönlendir ve geçişi engelle
+  // Token yoksa girişe yönlendir
   console.warn('Yetkisiz erişim engellendi, Login sayfasına yönlendiriliyorsunuz...');
   router.navigate(['/login']);
   return false;

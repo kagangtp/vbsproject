@@ -7,7 +7,7 @@ namespace IlkProjem.BLL.Interfaces;
 public interface ICustomerService
 {
     Task<IResult> AddCustomer(CustomerCreateDto createDto);
-    Task<IDataResult<List<CustomerReadDto>>> GetCustomersAsync(CustomerSpecParams custParams);
+    Task<IDataResult<List<CustomerReadDto>>> GetCustomersAsync(CustomerSpecParams custParams, CancellationToken ct = default);
     Task<IDataResult<CustomerReadDto>> GetCustomerById(int id);
     Task<IResult> UpdateCustomer(CustomerUpdateDto updateDto);
     Task<IResult> DeleteCustomer(CustomerDeleteDto deleteDto);

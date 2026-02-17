@@ -71,6 +71,7 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICalculatorService, CalculatorService>();
 
 builder.Services.AddControllers()
