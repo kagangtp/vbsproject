@@ -4,6 +4,7 @@ using IlkProjem.BLL.Interfaces;
 using IlkProjem.Core.Models;
 using IlkProjem.Core.Dtos.SpecificationDtos;
 using Microsoft.AspNetCore.Authorization;
+using IlkProjem.Core.Utilities.Results;
 
 namespace IlkProjem.API.Controllers;
 
@@ -13,10 +14,12 @@ namespace IlkProjem.API.Controllers;
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerService _customerService;
+    private readonly IExcelService _excelService; 
 
-    public CustomerController(ICustomerService customerService)
+    public CustomerController(ICustomerService customerService, IExcelService excelService)
     {
         _customerService = customerService;
+        _excelService = excelService;
     }
 
     // "Getir" - Tüm Liste
@@ -64,5 +67,24 @@ public class CustomerController : ControllerBase
     {
         var result = await _customerService.DeleteCustomer(deleteDto);
         return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpGet("export")]
+    public async Task<IActionResult> ExportToExcel([FromQuery] CustomerSpecParams custParams, CancellationToken ct)
+    {
+        // 1. Veriyi BLL'den çek
+        var result = await _customerService.GetCustomersAsync(custParams, ct);
+
+        if (!result.Success)
+            return BadRequest(result);
+
+        // 2. Generic ExcelService'i kullanarak byte array'i al
+        var fileContent = _excelService.GenerateExcel(result.Data ?? [], "Müşteri Listesi");
+
+        // 3. Dosya ismini ve MIME tipini belirterek fırlat
+        string fileName = $"Musteriler_{DateTime.Now:yyyyMMdd}.xlsx";
+        string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+        return File(fileContent, contentType, fileName);
     }
 }

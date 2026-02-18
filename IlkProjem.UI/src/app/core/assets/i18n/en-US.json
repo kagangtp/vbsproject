@@ -14,7 +14,9 @@
     "SEARCH_BUTTON": "Search",
     "ADD_BUTTON": "Add New Customer",
     "NEXT_PAGE": "Next",
-    "PREVIOUS_PAGE": "Previous"
+    "PREVIOUS_PAGE": "Previous",
+    "EXPORT_EXCEL": "Export Excel",
+    "SHOW_LABEL": "Show:"
   },
   "TABLE_HEADERS": {
     "ID": "ID",

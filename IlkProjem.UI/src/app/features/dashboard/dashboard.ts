@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common'; 
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; // 1. Bunları ekle
 import { CustomerService } from '../../core/services/customerService';
 import { Customer } from '../../core/models/customer';
@@ -7,23 +7,26 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomerParams } from '../../core/models/params/customer-params';
+import { ExportService } from '../../core/services/exportService';
+import { UTextBoxComponent } from '../u-text-box/u-text-box';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true, // Standalone component yapısı
-  imports: [CommonModule, CurrencyPipe, DatePipe, ReactiveFormsModule,TranslateModule], // 2. ReactiveFormsModule mutlaka burada olmalı
+  imports: [CommonModule, CurrencyPipe, DatePipe, ReactiveFormsModule, TranslateModule], // 2. ReactiveFormsModule mutlaka burada olmalı
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard implements OnInit,OnDestroy {
+export class Dashboard implements OnInit, OnDestroy {
 
   customerService = inject(CustomerService);
+  exportService = inject(ExportService);
   private fb = inject(FormBuilder); // 3. FormBuilder'ı inject et
 
   customers: Customer[] = [];
   displayCustomers: Customer[] = [];
   updateForm!: FormGroup; // 4. Hata veren değişken tam olarak bu
-  isModalOpen = false; 
+  isModalOpen = false;
   selectedCustomerId: number | null = null;
 
   //params
@@ -66,24 +69,24 @@ export class Dashboard implements OnInit,OnDestroy {
   }
 
   loadCustomers() {
-  // Pass the central params object to the service
-  this.customerService.getCustomers(this.params).subscribe(response => {
-    if (response.success) {
-      // For 100k records, we only show what the backend sends us
-      this.displayCustomers = response.data;
-      
-      // If you are doing "Load More" (Infinite Scroll):
-      // this.displayCustomers = [...this.displayCustomers, ...response.data];
-    } else {
-      console.error(response.message);
-    }
-  });
-}
+    // Pass the central params object to the service
+    this.customerService.getCustomers(this.params).subscribe(response => {
+      if (response.success) {
+        // For 100k records, we only show what the backend sends us
+        this.displayCustomers = response.data;
+
+        // If you are doing "Load More" (Infinite Scroll):
+        // this.displayCustomers = [...this.displayCustomers, ...response.data];
+      } else {
+        console.error(response.message);
+      }
+    });
+  }
 
   onEdit(customer: Customer) {
     this.selectedCustomerId = customer.id;
     this.isModalOpen = true;
-    
+
     // Formun içine verileri basıyoruz
     this.updateForm.patchValue({
       name: customer.name,
@@ -99,127 +102,150 @@ export class Dashboard implements OnInit,OnDestroy {
 
   // src/app/features/dashboard/dashboard.ts
 
-onUpdate() {
-  if (this.updateForm.valid && this.selectedCustomerId) {
-    const updatedCustomer = { 
-      id: this.selectedCustomerId, 
-      ...this.updateForm.value 
-    };
+  onUpdate() {
+    if (this.updateForm.valid && this.selectedCustomerId) {
+      const updatedCustomer = {
+        id: this.selectedCustomerId,
+        ...this.updateForm.value
+      };
 
-    // FIX: Remove 'this.selectedCustomerId' as the first argument
-    this.customerService.updateCustomer(updatedCustomer).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.closeModal();
-          this.loadCustomers();
-          // Optional: alert(response.message);
-        } else {
-          alert(response.message); // This shows why it failed (e.g., "Müşteri bulunamadı")
-        }
-      },
-      error: (err) => alert('Güncelleme hatası: ' + err.message)
-    });
+      // FIX: Remove 'this.selectedCustomerId' as the first argument
+      this.customerService.updateCustomer(updatedCustomer).subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.closeModal();
+            this.loadCustomers();
+            // Optional: alert(response.message);
+          } else {
+            alert(response.message); // This shows why it failed (e.g., "Müşteri bulunamadı")
+          }
+        },
+        error: (err) => alert('Güncelleme hatası: ' + err.message)
+      });
+    }
   }
-}
 
   onDelete(id: number) {
-  if (confirm('Emin misiniz?')) {
-    this.customerService.deleteCustomer(id).subscribe(response => {
-      if (response.success) {
-        this.loadCustomers();
-      } else {
-        alert(response.message);
-      }
-    });
+    if (confirm('Emin misiniz?')) {
+      this.customerService.deleteCustomer(id).subscribe(response => {
+        if (response.success) {
+          this.loadCustomers();
+        } else {
+          alert(response.message);
+        }
+      });
+    }
   }
-}
 
   //this is for add modal
   isAddModalOpen = false;
 
 
   onAdd() {
-  this.isAddModalOpen = true;
-  this.updateForm.reset({
-    name: '',
-    email: '',
-    balance: 0 // <--- Bunu eklemezsen form 'invalid' kalır!
-  });
-}
+    this.isAddModalOpen = true;
+    this.updateForm.reset({
+      name: '',
+      email: '',
+      balance: 0 // <--- Bunu eklemezsen form 'invalid' kalır!
+    });
+  }
 
 
 
-onCreate() {
-  if (this.updateForm.valid) {
-    const { name, email } = this.updateForm.value;
-    const newCustomer = { name, email }; 
+  onCreate() {
+    if (this.updateForm.valid) {
+      const { name, email } = this.updateForm.value;
+      const newCustomer = { name, email };
 
-    this.customerService.createCustomer(newCustomer).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.isAddModalOpen = false;
-          this.loadCustomers();
-        } else {
-          alert(response.message);
-        }
-      },
-      error: (err) => console.error("Ekleme hatası:", err)
+      this.customerService.createCustomer(newCustomer).subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.isAddModalOpen = false;
+            this.loadCustomers();
+          } else {
+            alert(response.message);
+          }
+        },
+        error: (err) => console.error("Ekleme hatası:", err)
       });
     }
   }
 
-onSearchInput(event: Event) {
-  const value = (event.target as HTMLInputElement).value;
-  this.searchSubject.next(value); // This feeds the debounce pipeline
-}
+  onSearchInput(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchSubject.next(value); // This feeds the debounce pipeline
+  }
 
-executeSearch(searchTerm: string) {
-  this.params.searchTerm = searchTerm;
-  this.params.lastId = 0;
-  this.history = []; // Reset history on new search
-  this.loadCustomers();
-}
-//pagination with cursor
-loadMore() {
-  if (this.displayCustomers.length > 0) {
-    // Take the ID of the last item in the list
-    const lastItem = this.displayCustomers[this.displayCustomers.length - 1];
-    this.params.lastId = lastItem.id;
+  executeSearch(searchTerm: string) {
+    this.params.searchTerm = searchTerm;
+    this.params.lastId = 0;
+    this.history = []; // Reset history on new search
+    this.loadCustomers();
+  }
+  //pagination with cursor
+  loadMore() {
+    if (this.displayCustomers.length > 0) {
+      // Take the ID of the last item in the list
+      const lastItem = this.displayCustomers[this.displayCustomers.length - 1];
+      this.params.lastId = lastItem.id;
 
-    this.customerService.getCustomers(this.params).subscribe(response => {
-      if (response.success) {
-        // APPEND the new data to the existing list
-        this.displayCustomers = [...this.displayCustomers, ...response.data];
-      }
-    });
+      this.customerService.getCustomers(this.params).subscribe(response => {
+        if (response.success) {
+          // APPEND the new data to the existing list
+          this.displayCustomers = [...this.displayCustomers, ...response.data];
+        }
+      });
     }
   }
 
   goNext() {
-  if (this.displayCustomers.length > 0) {
-    // 1. Save current cursor to history so we can go back
-    this.history.push(this.params.lastId);
+    if (this.displayCustomers.length > 0) {
+      // 1. Save current cursor to history so we can go back
+      this.history.push(this.params.lastId);
 
-    // 2. Set the new cursor to the last ID on the current screen
-    const lastItem = this.displayCustomers[this.displayCustomers.length - 1];
-    this.params.lastId = lastItem.id;
+      // 2. Set the new cursor to the last ID on the current screen
+      const lastItem = this.displayCustomers[this.displayCustomers.length - 1];
+      this.params.lastId = lastItem.id;
 
+      this.loadCustomers();
+    }
+  }
+
+  goPrevious() {
+    if (this.history.length > 0) {
+      // 1. Pop the previous cursor from our history stack
+      const previousId = this.history.pop();
+
+      // 2. Set lastId and reload
+      this.params.lastId = previousId ?? 0;
+      this.loadCustomers();
+    }
+  }
+
+  onPageSizeChange(event: Event) {
+    const newSize = +(event.target as HTMLSelectElement).value;
+    this.params.pageSize = newSize;
+    this.params.lastId = 0;   // Başa dön
+    this.history = [];         // Geçmişi temizle
     this.loadCustomers();
   }
-}
 
-goPrevious() {
-  if (this.history.length > 0) {
-    // 1. Pop the previous cursor from our history stack
-    const previousId = this.history.pop();
-    
-    // 2. Set lastId and reload
-    this.params.lastId = previousId ?? 0;
-    this.loadCustomers();
+  exportExcel() {
+    this.exportService.getCustomersExcel(this.params).subscribe({
+      next: (blob) => {
+        const fileName = `Musteri_Listesi_${new Date().toLocaleDateString()}.xlsx`;
+        this.exportService.saveAsExcel(blob, fileName);
+      },
+      error: (err) => {
+        console.error("Excel indirilirken bir hata oluştu:", err);
+      }
+    });
   }
-}
 
-
+  // onUTextSearch(value: string) {
+  //   this.params.searchTerm = value;
+  //   this.searchSubject.next(value); // Debounce (400ms) burada devreye girer
+  // }
 
 }
 

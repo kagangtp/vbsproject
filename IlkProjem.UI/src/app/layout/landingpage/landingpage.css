@@ -1,0 +1,93 @@
+.landing-page {
+    background-color: #fcfcfd; /* Görseldeki o çok açık gri/beyaz zemin */
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header Tasarımı */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 8%;
+    background: white;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #1a1a1a;
+}
+
+/* Hero Alanı */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    color: #1a1d23;
+    line-height: 1.2;
+}
+
+.hero h1 span {
+    color: #5e5ce6; /* Görseldeki 'Yeni Müşteri Ekle' butonu rengi */
+}
+
+/* BankApp Kart Stili (Görseldeki Row'ların aynısı) */
+.features-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 50px;
+}
+
+.preview-card {
+    background: white;
+    width: 80%;
+    max-width: 800px;
+    padding: 20px 30px;
+    border-radius: 20px; /* Görseldeki oval köşeler */
+    border: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03); /* Soft gölge */
+    transition: transform 0.3s;
+}
+
+.preview-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-id {
+    background: #f4f7ff;
+    color: #5e5ce6;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.card-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.text-success { color: #28a745; } /* Görseldeki bakiye yeşili */
+.text-primary { color: #5e5ce6; }
+
+/* Butonlar */
+.btn-primary-custom {
+    background-color: #5e5ce6;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}

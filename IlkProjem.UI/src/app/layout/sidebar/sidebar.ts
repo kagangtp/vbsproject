@@ -22,7 +22,7 @@ export class Sidebar {
     
     // 2. Kullanıcıyı login sayfasına yönlendir
     // Artık 'navigate' metodu Router üzerinde tanımlı olduğu için hata vermez
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
     
     console.log("Kullanıcı güvenli bir şekilde çıkış yaptı.");
   }

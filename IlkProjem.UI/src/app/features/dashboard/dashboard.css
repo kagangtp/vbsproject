@@ -1,14 +1,17 @@
 /* --- 1. GENEL KONTEYNER VE GİRİŞ --- */
 .dashboard-wrapper {
   padding: 32px;
-  background-color: #f8fafc; /* Slate-50: Çok hafif, ferah bir gri */
+  background-color: #f8fafc;
+  /* Slate-50: Çok hafif, ferah bir gri */
   min-height: calc(100vh - 64px);
 }
 
 .header-section {
-  display: flex;             /* Alignment magic */
-  justify-content: space-between; 
-  align-items: center;       /* Centers everything vertically */
+  display: flex;
+  /* Alignment magic */
+  justify-content: space-between;
+  align-items: center;
+  /* Centers everything vertically */
   gap: 24px;
   margin-bottom: 32px;
   border-bottom: 1px solid #e2e8f0;
@@ -17,7 +20,7 @@
 
 /* Ensure title doesn't take too much space */
 .title-area {
-  flex: 0 1 auto; 
+  flex: 0 1 auto;
 }
 
 .header-section h1 {
@@ -25,11 +28,13 @@
   font-size: 1.875rem;
   font-weight: 800;
   letter-spacing: -0.025em;
-  margin-bottom: 0; /* Reduced to align better with search bar */
+  margin-bottom: 0;
+  /* Reduced to align better with search bar */
 }
 
 .header-section h1 {
-  color: #0f172a; /* Slate-900: Derin, okunabilir siyah */
+  color: #0f172a;
+  /* Slate-900: Derin, okunabilir siyah */
   font-size: 1.875rem;
   font-weight: 800;
   letter-spacing: -0.025em;
@@ -37,7 +42,8 @@
 }
 
 .header-section p {
-  color: #64748b; /* Slate-500: Yardımcı metin rengi */
+  color: #64748b;
+  /* Slate-500: Yardımcı metin rengi */
   font-size: 1rem;
 }
 
@@ -52,7 +58,8 @@
   display: grid;
   grid-template-columns: 80px 1.5fr 2fr 1fr 1fr 100px;
   padding: 0 24px 8px 24px;
-  color: #94a3b8; /* Slate-400 */
+  color: #94a3b8;
+  /* Slate-400 */
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -68,7 +75,8 @@
   padding: 20px 24px;
   border-radius: 16px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Çok hafif derinlik */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  /* Çok hafif derinlik */
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -88,7 +96,8 @@
 
 .list-card:hover {
   transform: translateY(-2px);
-  border-color: #6366f1; /* Indigo-500 */
+  border-color: #6366f1;
+  /* Indigo-500 */
   box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.1);
   background-color: #ffffff;
 }
@@ -105,7 +114,8 @@
   border-radius: 8px;
   font-size: 0.75rem;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace; /* Teknik bir hava katar */
+  font-family: 'JetBrains Mono', monospace;
+  /* Teknik bir hava katar */
 }
 
 .customer-name {
@@ -120,7 +130,8 @@
 }
 
 .balance-amount {
-  color: #10b981; /* Emerald-500 */
+  color: #10b981;
+  /* Emerald-500 */
   font-weight: 800;
   font-size: 1.05rem;
 }
@@ -152,32 +163,37 @@
 }
 
 .add-btn {
-  flex-shrink: 0; /* Prevents button from getting squashed */
+  flex-shrink: 0;
+  /* Prevents button from getting squashed */
   display: flex;
   align-items: center;
   gap: 8px;
-  white-space: nowrap; /* Keeps text on one line */
+  white-space: nowrap;
+  /* Keeps text on one line */
 }
 
-.btn-icon.edit:hover { 
-  background: #e0e7ff; 
-  color: #4338ca; 
+.btn-icon.edit:hover {
+  background: #e0e7ff;
+  color: #4338ca;
   border-color: #c7d2fe;
 }
 
-.btn-icon.delete:hover { 
-  background: #fee2e2; 
-  color: #b91c1c; 
+.btn-icon.delete:hover {
+  background: #fee2e2;
+  color: #b91c1c;
   border-color: #fecaca;
 }
 
 /* --- 6. MODAL STİLLERİ (GÜZELEŞTİRİLMİŞ) --- */
 .modal-backdrop {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(8px); /* Cam efekti */
+  backdrop-filter: blur(8px);
+  /* Cam efekti */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,9 +217,13 @@
   align-items: center;
 }
 
-.form-body { padding: 32px; }
+.form-body {
+  padding: 32px;
+}
 
-.form-group { margin-bottom: 24px; }
+.form-group {
+  margin-bottom: 24px;
+}
 
 .form-group label {
   display: block;
@@ -249,7 +269,10 @@
 
 /* --- 7. RESPONSIVE DOKUNUŞLAR --- */
 @media (max-width: 1024px) {
-  .list-header { display: none; }
+  .list-header {
+    display: none;
+  }
+
   .list-card {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
@@ -259,10 +282,12 @@
 
 /* --- 8. ARAMA KUTUSU (GÜNCEL) --- */
 .search-container {
-  flex: 1;           /* Takes up the middle space */
+  flex: 1;
+  /* Takes up the middle space */
   display: flex;
-  justify-content: center; 
-  max-width: 500px;  /* Slightly wider for better balance */
+  justify-content: center;
+  max-width: 500px;
+  /* Slightly wider for better balance */
 }
 
 .search-box {
@@ -271,7 +296,8 @@
   background: white;
   width: 100%;
   padding: 6px 6px 6px 16px;
-  border-radius: 14px; /* Matches your list-card radius */
+  border-radius: 14px;
+  /* Matches your list-card radius */
   border: 1px solid #e2e8f0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: all 0.2s;
@@ -292,7 +318,8 @@
 }
 
 .btn-search {
-  background-color: #f1f5f9; /* Slate-100 */
+  background-color: #f1f5f9;
+  /* Slate-100 */
   border: 1px solid #e2e8f0;
   color: #475569;
   padding: 8px 18px;
@@ -310,12 +337,58 @@
 /* --- 9. MODERN PAGINATION CONTROLS --- */
 .pagination-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 16px;
   margin-top: 40px;
   padding-top: 24px;
   border-top: 1px solid #e2e8f0;
+}
+
+.pagination-left,
+.pagination-center,
+.pagination-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination-left {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.pagination-center {
+  flex: 1;
+  justify-content: center;
+}
+
+.pagination-right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* --- EXCEL EXPORT BUTTON --- */
+.btn-export {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-export:hover {
+  background: #d1fae5;
+  border-color: #6ee7b7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.15);
 }
 
 .btn-pagination {
@@ -330,12 +403,14 @@
   cursor: pointer;
   border: 1px solid #e2e8f0;
   background: white;
-  color: #475569; /* Slate-600 */
+  color: #475569;
+  /* Slate-600 */
 }
 
 /* Specific Style for NEXT (Primary Vibe) */
 .btn-next {
-  background: #6366f1; /* Indigo-500 */
+  background: #6366f1;
+  /* Indigo-500 */
   color: white;
   border: none;
   box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
@@ -343,7 +418,8 @@
 
 .btn-next:hover:not(:disabled) {
   background: #4f46e5;
-  transform: translateX(4px); /* Subtle forward nudge */
+  transform: translateX(4px);
+  /* Subtle forward nudge */
   box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
 }
 
@@ -351,7 +427,8 @@
 .btn-prev:hover:not(:disabled) {
   background: #f1f5f9;
   color: #1e293b;
-  transform: translateX(-4px); /* Subtle backward nudge */
+  transform: translateX(-4px);
+  /* Subtle backward nudge */
 }
 
 /* Disabled State: Matches your Slate theme */
@@ -362,4 +439,48 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+/* --- 10. PAGE SIZE SELECTOR --- */
+.page-size-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 6px 12px 6px 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.page-size-selector label {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.page-size-selector select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #f1f5f9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E") no-repeat right 10px center;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 30px 8px 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  min-width: 60px;
+  transition: all 0.2s;
+}
+
+.page-size-selector select:hover {
+  border-color: #6366f1;
+  background-color: #eef2ff;
+}
+
+.page-size-selector select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }

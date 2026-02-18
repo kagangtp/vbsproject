@@ -5,6 +5,7 @@ import { Mainpage } from './layout/mainpage/mainpage';
 import { authGuard } from './core/guards/auth-guard';
 import { RegistrationPage } from './layout/registrationpage/registrationpage';
 import { loginGuard } from './core/guards/login-guard';
+import { Landingpage } from './layout/landingpage/landingpage';
 
 export const routes: Routes = [
   { path: 'register', component: RegistrationPage },
@@ -26,7 +27,6 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
-
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: Landingpage },
   { path: '**', redirectTo: 'login' }
 ];

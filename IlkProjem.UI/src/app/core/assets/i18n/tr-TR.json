@@ -6,7 +6,9 @@
     "SEARCH_BUTTON": "Ara",
     "ADD_BUTTON": "Yeni Müşteri Ekle",
     "NEXT_PAGE": "Sonraki",
-    "PREVIOUS_PAGE": "Önceki"
+    "PREVIOUS_PAGE": "Önceki",
+    "EXPORT_EXCEL": "Excel İndir",
+    "SHOW_LABEL": "Göster:"
   },
   "TABLE_HEADERS": {
     "ID": "ID",

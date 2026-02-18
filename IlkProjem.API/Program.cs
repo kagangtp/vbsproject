@@ -10,7 +10,9 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Text;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,7 +67,35 @@ builder.Services.AddAuthentication(x =>
         ValidAudience = builder.Configuration["Jwt:Audience"],
         ValidateLifetime = true
     };
-});    
+});
+
+// --- 4. RATE LIMITING ---
+builder.Services.AddRateLimiter(options =>
+{
+    // --- A. TOPLAM (GLOBAL) LIMIT ---
+    // Uygulamaya saniyede toplam 100'den fazla istek gelmesin (Sunucu sağlığı için)
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter("Global", _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 100, 
+            Window = TimeSpan.FromSeconds(1),
+            QueueLimit = 0
+        }));
+
+   // --- B. KULLANICI BAZLI (PER USER) LIMIT ---
+    // Her bir IP adresi dakikada 20 istek atabilsin
+   options.AddPolicy("PerUser", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 20,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0
+            }));
+    
+    options.RejectionStatusCode = 429; // Too Many Requests
+});
 
 // Dependency Injection matching your Business/DataAccess layers
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -73,13 +103,14 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICalculatorService, CalculatorService>();
+builder.Services.AddScoped<IExcelService, ExcelService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
-// --- 4. CORS (Allowing Angular SPA) ---
+// --- 5. CORS (Allowing Angular SPA) ---
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
@@ -90,7 +121,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// --- 5. MIDDLEWARE PIPELINE ("Interceptors") ---
+// --- 6. MIDDLEWARE PIPELINE ("Interceptors") ---
 // This acts as the server-side interceptor for Content Language
 var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
 app.UseRequestLocalization(locOptions.Value);
@@ -103,14 +134,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseCors("AllowAngular");
+app.UseRateLimiter();
 
 app.UseAuthentication();    // "Sen kimsin?" (JWT kontrolü)
 app.UseAuthorization();     // "Bunu görmeye yetkin var mı?"
 
 app.UseHttpsRedirection();
-app.MapControllers();
+app.MapControllers().RequireRateLimiting("PerUser");
 
-// --- 6. SEED DATA ---
+
+
+// --- 7. SEED DATA ---
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
