@@ -4,22 +4,29 @@ import { provideHttpClient ,withInterceptors} from '@angular/common/http';
 import { languageInterceptor } from './core/interceptors/language-interceptor';
 import { provideTranslateService } from "@ngx-translate/core";
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader'; 
-
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { loadingInterceptor } from './core/interceptors/loading-interceptor';
+import { provideToastr } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([languageInterceptor, authInterceptor])),
+    provideHttpClient(withInterceptors([languageInterceptor, authInterceptor, loadingInterceptor])),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
         prefix: './core/assets/i18n/', // Your custom core path
         suffix: '.json'
       }),
       defaultLanguage: 'tr-TR'
+    }),
+    provideToastr({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right', // Sağ alt köşe profesyonel durur
+      preventDuplicates: true,
+      progressBar: true,
     })
   ]
 };

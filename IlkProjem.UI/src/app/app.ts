@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import trTranslations from './core/assets/i18n/tr-TR.json';
 import enTranslations from './core/assets/i18n/en-US.json';
+import { SpinnerComponent } from './layout/spinner/spinner';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet,SpinnerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

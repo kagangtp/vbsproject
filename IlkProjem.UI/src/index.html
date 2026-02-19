@@ -6,8 +6,100 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    // Sayfa render edilmeden hemen önce flag kontrolü yapıyoruz
+    if (sessionStorage.getItem('bankapp_splash_seen')) {
+      document.documentElement.classList.add('splash-none');
+    }
+  </script>
+
+  <style>
+    /* Eğer 'splash-none' sınıfı varsa, splash container'ı hiç gösterme */
+    .splash-none .splash-container {
+      display: none !important;
+    }
+    
+    /* Mevcut splash CSS kodların buraya gelecek... */
+    .splash-container {
+      /* ... önceki CSS kodların ... */
+    }
+  </style>
 </head>
 <body>
-  <app-root></app-root>
+ <app-root>
+  <style>
+    .splash-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background-color: #ffffff; /* Temiz beyaz arka plan */
+      z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+
+    .splash-logo {
+      font-size: 80px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 10px 15px rgba(99, 102, 241, 0.2)); /* Mor ışıltı */
+      animation: bounce 2s infinite ease-in-out;
+    }
+
+    .splash-title {
+      font-size: 42px;
+      font-weight: 800;
+      /* Landing page'deki o güzel mor/indigo tonu */
+      color: #6366f1; 
+      letter-spacing: -2px;
+      margin-bottom: 30px;
+    }
+
+    .splash-loader-bar {
+      width: 200px;
+      height: 4px;
+      background-color: #f3f4f6;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* İlerleyen bar efekti */
+    .splash-loader-progress {
+      width: 40%;
+      height: 100%;
+      background-color: #6366f1;
+      border-radius: 10px;
+      position: absolute;
+      animation: slide 1.5s infinite ease-in-out;
+    }
+
+    .splash-status {
+      margin-top: 15px;
+      color: #6b7280; /* UI'daki ikincil metin gri tonu */
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    @keyframes slide {
+      0% { left: -40%; }
+      100% { left: 100%; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+
+  <div class="splash-container">
+    <div class="splash-logo">🏦</div>
+    <div class="splash-title">BankApp</div>
+    
+    <div class="splash-loader-bar">
+      <div class="splash-loader-progress"></div>
+    </div>
+    <div class="splash-status">Güvenli bağlantı kuruluyor...</div>
+  </div>
+</app-root>
 </body>
 </html>

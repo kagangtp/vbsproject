@@ -9,8 +9,11 @@ import { Router } from '@angular/router';
 })
 export class Landingpage {
   private router = inject(Router);
-
   goToDashboard() {
     this.router.navigate(['/dashboard']);
+  }
+  
+  goToRegister() {
+    this.router.navigate(['/register']); // Eğer register sayfan varsa buraya gider
   }
 }

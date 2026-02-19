@@ -20,29 +20,29 @@ public class CustomerRepository : ICustomerRepository
     
     }
 
-    public async Task<Customer?> GetByIdAsync(int id) => await _context.Customers.FindAsync(id);
+    public async Task<Customer?> GetByIdAsync(int id, CancellationToken ct = default) => await _context.Customers.FindAsync(new object[] { id }, ct);
 
-    public async Task AddAsync(Customer customer)
+    public async Task AddAsync(Customer customer, CancellationToken ct = default)
     {
-        await _context.Customers.AddAsync(customer);
-        await _context.SaveChangesAsync();
+        await _context.Customers.AddAsync(customer, ct);
+        await _context.SaveChangesAsync(ct);
     }
 
-    public async Task<bool> UpdateAsync(Customer customer)
+    public async Task<bool> UpdateAsync(Customer customer, CancellationToken ct = default)
     {
         _context.Customers.Update(customer);
         
         // Değişiklikleri kaydet ve kaç satırın etkilendiğini al
-        int affectedRows = await _context.SaveChangesAsync();
+        int affectedRows = await _context.SaveChangesAsync(ct);
         
         // Eğer en az 1 satır güncellendiyse true, aksi halde false döner
         return affectedRows > 0;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
     {
         // 1. Önce veritabanından o ID'ye sahip kaydı bulmamız lazım
-        var customer = await _context.Customers.FindAsync(id);
+        var customer = await _context.Customers.FindAsync(new object[] { id }, ct);
         
         // 2. Eğer öyle bir müşteri yoksa silme işlemine gerek yok, false dön
         if (customer == null) return false;
@@ -50,7 +50,7 @@ public class CustomerRepository : ICustomerRepository
         // 3. Müşteri bulunduysa şimdi silebiliriz
         _context.Customers.Remove(customer);
         
-        int affectedRows = await _context.SaveChangesAsync();
+        int affectedRows = await _context.SaveChangesAsync(ct);
         return affectedRows > 0;
     }
 

@@ -31,7 +31,7 @@ public class CustomerController : ControllerBase
     // }
 
     [HttpGet]
-    public async Task<IActionResult> GetCustomers([FromQuery] CustomerSpecParams custParams,CancellationToken ct)
+    public async Task<IActionResult> GetCustomers([FromQuery] CustomerSpecParams custParams, CancellationToken ct)
     {
         var result = await _customerService.GetCustomersAsync(custParams, ct);
         return result.Success ? Ok(result) : BadRequest(result);
@@ -39,33 +39,33 @@ public class CustomerController : ControllerBase
 
     // "GetirById"
     [HttpGet("{id}")] 
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken ct)
     {
-        var result = await _customerService.GetCustomerById(id);
+        var result = await _customerService.GetCustomerById(id, ct);
         return result.Success ? Ok(result) : NotFound(result);
     }
 
     // "Ekle"
     [HttpPost] 
-    public async Task<IActionResult> Post(CustomerCreateDto createDto)
+    public async Task<IActionResult> Post(CustomerCreateDto createDto, CancellationToken ct)
     {
-        var result = await _customerService.AddCustomer(createDto);
+        var result = await _customerService.AddCustomer(createDto, ct);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
     // "Güncelle"
     [HttpPut] 
-    public async Task<IActionResult> Update(CustomerUpdateDto updateDto)
+    public async Task<IActionResult> Update(CustomerUpdateDto updateDto, CancellationToken ct)
     {
-        var result = await _customerService.UpdateCustomer(updateDto);
+        var result = await _customerService.UpdateCustomer(updateDto, ct);
         return result.Success ? Ok(result) : NotFound(result);
     }
 
     // "Sil"
     [HttpDelete] 
-    public async Task<IActionResult> Delete(CustomerDeleteDto deleteDto)
+    public async Task<IActionResult> Delete(CustomerDeleteDto deleteDto, CancellationToken ct)
     {
-        var result = await _customerService.DeleteCustomer(deleteDto);
+        var result = await _customerService.DeleteCustomer(deleteDto, ct);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
