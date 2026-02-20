@@ -1,29 +1,39 @@
 <div class="landing-page">
   <nav class="top-nav">
     <div class="logo">
-      <img src="assets/bank-icon.png" alt=""> 
+      <img src="assets/bank-icon.png" alt="">
       <span>BankApp</span>
     </div>
     <div class="nav-links">
-        <button class="btn-link">Giriş Yap</button>
-        
-        <button class="btn-ghost" (click)="goToRegister()">Kayıt Ol</button>
-        
-        <button class="btn-primary-custom" (click)="goToDashboard()">Hemen Başla</button>
+      <button class="btn-link" (click)="goToLogin()">{{ 'LANDING_PAGE.LOGIN_BUTTON' | translate }}</button>
+
+      <button class="btn-ghost" (click)="goToRegister()">{{ 'LANDING_PAGE.REGISTER_BUTTON' | translate }}</button>
+
+      <button class="btn-primary-custom" (click)="goToDashboard()">{{ 'LANDING_PAGE.START_BUTTON' | translate
+        }}</button>
+
+      <div class="lang-dropdown">
+        <button class="dropbtn">🌐</button>
+        <div class="dropdown-content">
+          <a (click)="changeLanguage('tr-TR')">🇹🇷 Türkçe</a>
+          <a (click)="changeLanguage('en-US')">🇺🇸 English</a>
+        </div>
+      </div>
     </div>
   </nav>
 
   <header class="hero">
-    <h1>Müşteri Yönetiminde <br><span>Yeni Standart</span></h1>
-    <p>BankApp ile bakiyeleri takip et, raporları dışarı aktar ve verilerini güvenle yönet.</p>
+    <h1>{{ 'LANDING_PAGE.HERO_TITLE' | translate }} <br><span>{{ 'LANDING_PAGE.HERO_HIGHLIGHT' | translate }}</span>
+    </h1>
+    <p>{{ 'LANDING_PAGE.HERO_SUBTITLE' | translate }}</p>
   </header>
 
   <section class="features-preview">
     <div class="preview-card">
       <div class="card-id">#01</div>
       <div class="card-info">
-        <h3>Hızlı Veri Erişimi</h3>
-        <p>Sistemde kayıtlı müşterilere anında ulaşın.</p>
+        <h3>{{ 'LANDING_PAGE.FEATURE_1_TITLE' | translate }}</h3>
+        <p>{{ 'LANDING_PAGE.FEATURE_1_DESC' | translate }}</p>
       </div>
       <div class="card-value text-success">$100,000.00</div>
     </div>
@@ -31,8 +41,8 @@
     <div class="preview-card">
       <div class="card-id">#02</div>
       <div class="card-info">
-        <h3>Excel Raporlama</h3>
-        <p>Tüm listeyi saniyeler içinde export edin.</p>
+        <h3>{{ 'LANDING_PAGE.FEATURE_2_TITLE' | translate }}</h3>
+        <p>{{ 'LANDING_PAGE.FEATURE_2_DESC' | translate }}</p>
       </div>
       <div class="card-value text-primary">Full Export</div>
     </div>

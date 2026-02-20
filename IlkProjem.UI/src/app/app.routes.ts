@@ -6,10 +6,11 @@ import { authGuard } from './core/guards/auth-guard';
 import { RegistrationPage } from './layout/registrationpage/registrationpage';
 import { loginGuard } from './core/guards/login-guard';
 import { Landingpage } from './layout/landingpage/landingpage';
+import { NotFound } from './layout/not-found/not-found';
+import { Unauthorized } from './layout/unauthorized/unauthorized';
 
 export const routes: Routes = [
   { path: 'register', component: RegistrationPage },
-
   { 
     path: 'login', 
     component: Loginpage, 
@@ -28,5 +29,7 @@ export const routes: Routes = [
     ]
   },
   { path: '', component: Landingpage },
-  { path: '**', redirectTo: 'login' }
+  { path: 'not-found', component: NotFound},
+  { path: 'unauthorized', component: Unauthorized},
+  { path: '**', redirectTo: 'not-found' }
 ];

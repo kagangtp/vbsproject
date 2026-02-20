@@ -1,11 +1,12 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; // 1. Bunları ekle
 import { CustomerService } from '../../core/services/customerService';
 import { Customer } from '../../core/models/customer';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CustomerParams } from '../../core/models/params/customer-params';
 import { ExportService } from '../../core/services/exportService';
 import { UTextBoxComponent } from '../u-text-box/u-text-box';
@@ -22,6 +23,8 @@ export class Dashboard implements OnInit, OnDestroy {
   customerService = inject(CustomerService);
   exportService = inject(ExportService);
   private fb = inject(FormBuilder); // 3. FormBuilder'ı inject et
+  private toastr = inject(ToastrService);
+  private translate = inject(TranslateService);
 
   customers: Customer[] = [];
   displayCustomers: Customer[] = [];
@@ -115,12 +118,12 @@ export class Dashboard implements OnInit, OnDestroy {
           if (response.success) {
             this.closeModal();
             this.loadCustomers();
-            // Optional: alert(response.message);
+            this.toastr.success(this.translate.instant('TOAST.CUSTOMER_UPDATED'), this.translate.instant('TOAST.SUCCESS'));
           } else {
-            alert(response.message); // This shows why it failed (e.g., "Müşteri bulunamadı")
+            this.toastr.error(response.message, this.translate.instant('TOAST.ERROR'));
           }
         },
-        error: (err) => alert('Güncelleme hatası: ' + err.message)
+        error: (err) => this.toastr.error(err.message, this.translate.instant('TOAST.UPDATE_ERROR'))
       });
     }
   }
@@ -130,8 +133,9 @@ export class Dashboard implements OnInit, OnDestroy {
       this.customerService.deleteCustomer(id).subscribe(response => {
         if (response.success) {
           this.loadCustomers();
+          this.toastr.success(this.translate.instant('TOAST.CUSTOMER_DELETED'), this.translate.instant('TOAST.SUCCESS'));
         } else {
-          alert(response.message);
+          this.toastr.error(response.message, this.translate.instant('TOAST.ERROR'));
         }
       });
     }
@@ -162,11 +166,12 @@ export class Dashboard implements OnInit, OnDestroy {
           if (response.success) {
             this.isAddModalOpen = false;
             this.loadCustomers();
+            this.toastr.success(this.translate.instant('TOAST.CUSTOMER_ADDED'), this.translate.instant('TOAST.SUCCESS'));
           } else {
-            alert(response.message);
+            this.toastr.error(response.message, this.translate.instant('TOAST.ERROR'));
           }
         },
-        error: (err) => console.error("Ekleme hatası:", err)
+        error: (err) => this.toastr.error(err.message, this.translate.instant('TOAST.ADD_ERROR'))
       });
     }
   }

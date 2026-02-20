@@ -38,5 +38,71 @@
     "NAME_ERROR": "You must enter a valid name (Min 3 characters).",
     "EMAIL_ERROR": "Please enter a valid email address."
   },
-  "EMPTY_STATE": "No customers found to display."
+  "EMPTY_STATE": "No customers found to display.",
+  "LOGIN_PAGE": {
+    "WELCOME": "Welcome Back",
+    "SUBTITLE": "Sign in to access the customer management system",
+    "EMAIL_LABEL": "Email Address",
+    "EMAIL_PLACEHOLDER": "Enter your email",
+    "PASSWORD_LABEL": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "REMEMBER_ME": "Remember me",
+    "FORGOT_PASSWORD": "Forgot password?",
+    "SIGN_IN": "Sign In",
+    "NO_ACCOUNT": "Don't have an account?",
+    "CONTACT_ADMIN": "Contact Admin"
+  },
+  "REGISTER_PAGE": {
+    "TITLE": "Create Account",
+    "SUBTITLE": "Join our customer management system",
+    "FULL_NAME": "Full Name",
+    "FULL_NAME_PLACEHOLDER": "Enter your full name",
+    "USERNAME": "Username",
+    "USERNAME_PLACEHOLDER": "Enter your username",
+    "EMAIL": "Email Address",
+    "EMAIL_PLACEHOLDER": "Enter your email",
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "SIGN_UP": "Sign Up",
+    "HAS_ACCOUNT": "Already have an account?",
+    "SIGN_IN": "Sign In"
+  },
+  "LANDING_PAGE": {
+    "LOGIN_BUTTON": "Sign In",
+    "REGISTER_BUTTON": "Sign Up",
+    "START_BUTTON": "Get Started",
+    "HERO_TITLE": "The New Standard in",
+    "HERO_HIGHLIGHT": "Customer Management",
+    "HERO_SUBTITLE": "Track balances, export reports, and securely manage your data with BankApp.",
+    "FEATURE_1_TITLE": "Fast Data Access",
+    "FEATURE_1_DESC": "Instantly access all registered customers.",
+    "FEATURE_2_TITLE": "Excel Reporting",
+    "FEATURE_2_DESC": "Export the full list in seconds."
+  },
+  "UNAUTHORIZED_PAGE": {
+    "TITLE": "UNAUTHORIZED ACCESS!",
+    "DESCRIPTION": "Sorry, you don't have the keys to this vault or your session has expired. Please verify your identity and try again.",
+    "BUTTON": "GET THE KEYS (Sign In)"
+  },
+  "NOT_FOUND_PAGE": {
+    "TITLE": "OOPS! WE WENT BANKRUPT!",
+    "DESCRIPTION": "The page you're looking for either never existed or had all its assets seized. No cash (pages) left in the system!",
+    "BUTTON": "RETURN TO EMERGENCY FUND (Dashboard)"
+  },
+  "TOAST": {
+    "SUCCESS": "Success",
+    "ERROR": "Error",
+    "LOGOUT_TITLE": "Logout",
+    "CUSTOMER_UPDATED": "Customer updated successfully.",
+    "CUSTOMER_DELETED": "Customer deleted successfully.",
+    "CUSTOMER_ADDED": "Customer added successfully.",
+    "UPDATE_ERROR": "Update error",
+    "ADD_ERROR": "Add error",
+    "LOGOUT_SUCCESS": "You have been logged out successfully.",
+    "ERROR_401": "Your session has expired. Please sign in again.",
+    "ERROR_403": "You do not have permission for this action.",
+    "ERROR_404": "The requested resource was not found.",
+    "ERROR_500": "A server error occurred. Please try again later.",
+    "ERROR_NETWORK": "Unable to connect to the server. Check your internet connection."
+  }
 }

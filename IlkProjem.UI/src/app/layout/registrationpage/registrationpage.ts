@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common'; // NgIf, NgClass vb. için
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/authService';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-registrationpage',
   standalone: true, // Standalone olduğunu belirtiyoruz
-  imports: [CommonModule, ReactiveFormsModule, RouterLink], // Gerekli modüller burada
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, TranslateModule], // Gerekli modüller burada
   templateUrl: './registrationpage.html',
   styleUrls: ['./registrationpage.css']
 })
@@ -18,7 +19,7 @@ export class RegistrationPage implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({

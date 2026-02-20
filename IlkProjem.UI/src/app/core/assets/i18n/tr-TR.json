@@ -38,6 +38,71 @@
     "TRANSACTIONS": "İşlemler",
     "SETTINGS": "Ayarlar",
     "LOGOUT": "Çıkış Yap"
+  },
+  "LOGIN_PAGE": {
+    "WELCOME": "Tekrar Hoşgeldiniz",
+    "SUBTITLE": "Müşteri yönetim sistemine giriş yapın",
+    "EMAIL_LABEL": "E-posta Adresi",
+    "EMAIL_PLACEHOLDER": "E-posta adresinizi girin",
+    "PASSWORD_LABEL": "Şifre",
+    "PASSWORD_PLACEHOLDER": "Şifrenizi girin",
+    "REMEMBER_ME": "Beni hatırla",
+    "FORGOT_PASSWORD": "Şifremi unuttum?",
+    "SIGN_IN": "Giriş Yap",
+    "NO_ACCOUNT": "Hesabınız yok mu?",
+    "CONTACT_ADMIN": "Yönetici ile İletişime Geç"
+  },
+  "REGISTER_PAGE": {
+    "TITLE": "Hesap Oluştur",
+    "SUBTITLE": "Müşteri yönetim sistemine katılın",
+    "FULL_NAME": "Ad Soyad",
+    "FULL_NAME_PLACEHOLDER": "Adınızı ve soyadınızı girin",
+    "USERNAME": "Kullanıcı Adı",
+    "USERNAME_PLACEHOLDER": "Kullanıcı adınızı girin",
+    "EMAIL": "E-posta Adresi",
+    "EMAIL_PLACEHOLDER": "E-posta adresinizi girin",
+    "PASSWORD": "Şifre",
+    "PASSWORD_PLACEHOLDER": "Şifrenizi girin",
+    "SIGN_UP": "Kayıt Ol",
+    "HAS_ACCOUNT": "Zaten hesabınız var mı?",
+    "SIGN_IN": "Giriş Yap"
+  },
+  "LANDING_PAGE": {
+    "LOGIN_BUTTON": "Giriş Yap",
+    "REGISTER_BUTTON": "Kayıt Ol",
+    "START_BUTTON": "Hemen Başla",
+    "HERO_TITLE": "Müşteri Yönetiminde",
+    "HERO_HIGHLIGHT": "Yeni Standart",
+    "HERO_SUBTITLE": "BankApp ile bakiyeleri takip et, raporları dışarı aktar ve verilerini güvenle yönet.",
+    "FEATURE_1_TITLE": "Hızlı Veri Erişimi",
+    "FEATURE_1_DESC": "Sistemde kayıtlı müşterilere anında ulaşın.",
+    "FEATURE_2_TITLE": "Excel Raporlama",
+    "FEATURE_2_DESC": "Tüm listeyi saniyeler içinde export edin."
+  },
+  "UNAUTHORIZED_PAGE": {
+    "TITLE": "YETKİSİZ ERİŞİM!",
+    "DESCRIPTION": "Üzgünüz, bu kasanın anahtarı sizde yok veya oturum süreniz dolmuş. Lütfen kimliğinizi doğrulayıp tekrar deneyin.",
+    "BUTTON": "ANAHTARLARI AL (Giriş Yap)"
+  },
+  "NOT_FOUND_PAGE": {
+    "TITLE": "EYVAH! İFLAS ETTİK!",
+    "DESCRIPTION": "Aradığınız sayfa ya hiç var olmadı ya da tüm varlığına el konuldu. Sistemde nakit (sayfa) kalmadı!",
+    "BUTTON": "ACİL DURUM FONUNA DÖN (Dashboard)"
+  },
+  "TOAST": {
+    "SUCCESS": "Başarılı",
+    "ERROR": "Hata",
+    "LOGOUT_TITLE": "Çıkış",
+    "CUSTOMER_UPDATED": "Müşteri başarıyla güncellendi.",
+    "CUSTOMER_DELETED": "Müşteri başarıyla silindi.",
+    "CUSTOMER_ADDED": "Müşteri başarıyla eklendi.",
+    "UPDATE_ERROR": "Güncelleme hatası",
+    "ADD_ERROR": "Ekleme hatası",
+    "LOGOUT_SUCCESS": "Başarıyla çıkış yapıldı.",
+    "ERROR_401": "Oturum süreniz doldu. Lütfen tekrar giriş yapın.",
+    "ERROR_403": "Bu işlem için yetkiniz bulunmuyor.",
+    "ERROR_404": "Aradığınız kaynak bulunamadı.",
+    "ERROR_500": "Sunucu hatası oluştu. Lütfen daha sonra tekrar deneyin.",
+    "ERROR_NETWORK": "Sunucuya bağlanılamıyor. İnternet bağlantınızı kontrol edin."
   }
-
 }

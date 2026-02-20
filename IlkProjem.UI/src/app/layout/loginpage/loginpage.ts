@@ -2,20 +2,21 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/authService';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-loginpage',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TranslateModule],
   templateUrl: './loginpage.html',
   styleUrl: './loginpage.css',
 })
 export class Loginpage {
-    private router = inject(Router);
-    private authService = inject(AuthService);
+  private router = inject(Router);
+  private authService = inject(AuthService);
 
-    loginData = { email: '', password: '' };
-  
+  loginData = { email: '', password: '' };
+
   // onLogin() {
   //   this.authService.login(this.loginData).subscribe({
   //     next: (response) => {
@@ -23,13 +24,13 @@ export class Loginpage {
   //       if (response.success) {
   //         // 2. Token artık 'data' alanının içinde
   //         const token = response.data;
-          
+
   //         // 3. Servisindeki metodu kullanarak kaydet
   //         this.authService.saveToken(token);
-          
+
   //         // NOT: Backend'den 'user' bilgisi dönüyorsan response.data içinden alabilirsin
   //         // Eğer token içinden parse edeceksen ilerde JWT Helper kullanabiliriz.
-          
+
   //         // 4. Başarılıysa yönlendir
   //         this.router.navigate(['/mainpage/dashboard']);
   //       } else {
@@ -53,7 +54,7 @@ export class Loginpage {
         if (response.success) {
           // Token ve rememberMe bilgisini birlikte gönderiyoruz
           this.authService.saveToken(response.data, this.rememberMe);
-          
+
           console.log(this.rememberMe ? "Kalıcı giriş yapıldı." : "Geçici giriş yapıldı.");
           this.router.navigate(['/mainpage/dashboard']);
         }
