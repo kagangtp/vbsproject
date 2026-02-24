@@ -102,8 +102,12 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<ICalculatorService, CalculatorService>();
 builder.Services.AddScoped<IExcelService, ExcelService>();
+builder.Services.AddScoped<IFilesService, FilesService>();
+builder.Services.AddScoped<IFilesRepository, FilesRepository>();
+builder.Services.AddScoped<IMailService, MailManager>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => {
@@ -116,7 +120,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngular",
         policy => policy.WithOrigins("http://localhost:4200")
                         .AllowAnyMethod()
-                        .AllowAnyHeader()); // Important for Accept-Language header
+                        .AllowAnyHeader()
+                        .AllowCredentials()); // HttpOnly cookie'ler için gerekli
 });
 
 var app = builder.Build();

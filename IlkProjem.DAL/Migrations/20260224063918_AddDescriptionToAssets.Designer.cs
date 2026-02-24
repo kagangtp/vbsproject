@@ -3,6 +3,7 @@ using System;
 using IlkProjem.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IlkProjem.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260224063918_AddDescriptionToAssets")]
+    partial class AddDescriptionToAssets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,6 +87,9 @@ namespace IlkProjem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int?>("CarId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -95,6 +101,9 @@ namespace IlkProjem.DAL.Migrations
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("HouseId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Metadata")
                         .HasColumnType("jsonb");
 
@@ -103,20 +112,17 @@ namespace IlkProjem.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int?>("OwnerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("OwnerType")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.Property<string>("RelativePath")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CarId");
+
                     b.HasIndex("CreatedAt");
+
+                    b.HasIndex("HouseId");
 
                     b.HasIndex("RelativePath")
                         .IsUnique();
@@ -241,6 +247,17 @@ namespace IlkProjem.DAL.Migrations
                     b.Navigation("ProfileImage");
                 });
 
+            modelBuilder.Entity("IlkProjem.Core.Models.Files", b =>
+                {
+                    b.HasOne("IlkProjem.Core.Models.Car", null)
+                        .WithMany("CarImages")
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("IlkProjem.Core.Models.House", null)
+                        .WithMany("HouseImages")
+                        .HasForeignKey("HouseId");
+                });
+
             modelBuilder.Entity("IlkProjem.Core.Models.House", b =>
                 {
                     b.HasOne("IlkProjem.Core.Models.Customer", "Customer")
@@ -263,11 +280,21 @@ namespace IlkProjem.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("IlkProjem.Core.Models.Car", b =>
+                {
+                    b.Navigation("CarImages");
+                });
+
             modelBuilder.Entity("IlkProjem.Core.Models.Customer", b =>
                 {
                     b.Navigation("Cars");
 
                     b.Navigation("Houses");
+                });
+
+            modelBuilder.Entity("IlkProjem.Core.Models.House", b =>
+                {
+                    b.Navigation("HouseImages");
                 });
 
             modelBuilder.Entity("IlkProjem.Core.Models.User", b =>

@@ -3,31 +3,50 @@ using IlkProjem.Core.Models;
 
 namespace IlkProjem.DAL.Data;
 
-// This class is the "Bridge" to PostgreSQL
-// Customer data name is a problem this needs an update
 public class AppDbContext : DbContext
 {
-    // The constructor tells EF how to connect using the settings in appsettings.json
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    // This creates the "Customers" table in your database
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<User> Users => Set<User>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<Files> Files => Set<Files>(); // Yeni tablo
+
+    public DbSet<House> Houses => Set<House>();
+    public DbSet<Car> Cars => Set<Car>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
+        // 1. Files Tablosu Yapılandırması (Kararlarımıza Uygun)
+        modelBuilder.Entity<Files>(entity =>
+        {
+            entity.ToTable("Files"); // Tablo ismini netleştiriyoruz
+
+            // PostgreSQL'e özel JSONB kolon tipi
+            entity.Property(e => e.Metadata)
+                  .HasColumnType("jsonb");
+
+            // Performans için Index'ler
+            entity.HasIndex(e => e.CreatedAt); 
+            entity.HasIndex(e => e.RelativePath).IsUnique(); // Çakışmayı önlemek için
+        });
+
+        // 2. Customer Tablosu İsimlendirme Güncellemesi
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.ToTable("Customers"); // "CustomerData" vb. sorunlu isimleri düzeltir
+        });
+
+        // 3. RefreshToken Yapılandırması (Mevcut yapın)
         modelBuilder.Entity<RefreshToken>(entity =>
         {
-            // User ile ilişki: 1 User → N RefreshToken
             entity.HasOne(rt => rt.User)
                   .WithMany(u => u.RefreshTokens)
                   .HasForeignKey(rt => rt.UserId)
-                  .OnDelete(DeleteBehavior.Cascade); // User silinirse token'ları da git
+                  .OnDelete(DeleteBehavior.Cascade);
 
-            // Token sütununa index: hızlı arama için
             entity.HasIndex(rt => rt.Token).IsUnique();
         });
     }

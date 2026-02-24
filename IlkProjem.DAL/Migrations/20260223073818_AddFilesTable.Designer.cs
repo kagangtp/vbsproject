@@ -3,6 +3,7 @@ using System;
 using IlkProjem.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IlkProjem.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260223073818_AddFilesTable")]
+    partial class AddFilesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,31 +24,6 @@ namespace IlkProjem.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("IlkProjem.Core.Models.Car", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Plate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Cars");
-                });
 
             modelBuilder.Entity("IlkProjem.Core.Models.Customer", b =>
                 {
@@ -68,12 +46,7 @@ namespace IlkProjem.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ProfileImageId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProfileImageId");
 
                     b.ToTable("Customers", (string)null);
                 });
@@ -103,13 +76,6 @@ namespace IlkProjem.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int?>("OwnerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("OwnerType")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.Property<string>("RelativePath")
                         .IsRequired()
                         .HasColumnType("text");
@@ -122,31 +88,6 @@ namespace IlkProjem.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("Files", (string)null);
-                });
-
-            modelBuilder.Entity("IlkProjem.Core.Models.House", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Houses");
                 });
 
             modelBuilder.Entity("IlkProjem.Core.Models.RefreshToken", b =>
@@ -221,37 +162,6 @@ namespace IlkProjem.DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("IlkProjem.Core.Models.Car", b =>
-                {
-                    b.HasOne("IlkProjem.Core.Models.Customer", "Customer")
-                        .WithMany("Cars")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("IlkProjem.Core.Models.Customer", b =>
-                {
-                    b.HasOne("IlkProjem.Core.Models.Files", "ProfileImage")
-                        .WithMany()
-                        .HasForeignKey("ProfileImageId");
-
-                    b.Navigation("ProfileImage");
-                });
-
-            modelBuilder.Entity("IlkProjem.Core.Models.House", b =>
-                {
-                    b.HasOne("IlkProjem.Core.Models.Customer", "Customer")
-                        .WithMany("Houses")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("IlkProjem.Core.Models.RefreshToken", b =>
                 {
                     b.HasOne("IlkProjem.Core.Models.User", "User")
@@ -261,13 +171,6 @@ namespace IlkProjem.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("IlkProjem.Core.Models.Customer", b =>
-                {
-                    b.Navigation("Cars");
-
-                    b.Navigation("Houses");
                 });
 
             modelBuilder.Entity("IlkProjem.Core.Models.User", b =>

@@ -52,8 +52,8 @@ export class Loginpage {
     this.authService.login(this.loginData).subscribe({
       next: (response) => {
         if (response.success) {
-          // Token ve rememberMe bilgisini birlikte gönderiyoruz
-          this.authService.saveToken(response.data, this.rememberMe);
+          // Artık response.data bir LoginResponse objesi (accessToken + expiresAt)
+          this.authService.saveToken(response.data.accessToken, this.rememberMe);
 
           console.log(this.rememberMe ? "Kalıcı giriş yapıldı." : "Geçici giriş yapıldı.");
           this.router.navigate(['/mainpage/dashboard']);

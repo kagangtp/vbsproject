@@ -1,10 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { SingleResponseModel } from '../models/responses/single-response-model';
 import { ResponseModel } from '../models/responses/response-model';
 
+// Backend'den dönen LoginResponseDto'ya karşılık gelen interface
+export interface LoginResponse {
+  accessToken: string;
+  expiresAt: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,47 +17,79 @@ import { ResponseModel } from '../models/responses/response-model';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  // Backend'in Program.cs'deki portu
-  private apiUrl = 'http://localhost:5005/api/auth'; 
+  private apiUrl = 'http://localhost:5005/api/auth';
 
+  // --- Login ---
+  login(loginData: any): Observable<SingleResponseModel<LoginResponse>> {
+    return this.http.post<SingleResponseModel<LoginResponse>>(
+      `${this.apiUrl}/login`,
+      loginData,
+      { withCredentials: true } // Cookie'yi almak için şart
+    );
+  }
 
-// authService.ts
-login(loginData: any): Observable<SingleResponseModel<string>> {
-  // Backend'den string (token) içeren bir SingleResponseModel bekliyoruz
-  return this.http.post<SingleResponseModel<string>>(`${this.apiUrl}/login`, loginData);
-}
+  // --- Register ---
+  register(registerData: any): Observable<ResponseModel> {
+    return this.http.post<ResponseModel>(`${this.apiUrl}/register`, registerData);
+  }
 
-register(registerData: any): Observable<ResponseModel> {
-  return this.http.post<ResponseModel>(`${this.apiUrl}/register`, registerData);
-}
+  // --- Refresh Token ---
+  // 401 alınca interceptor tarafından otomatik çağrılacak
+  refreshToken(): Observable<SingleResponseModel<LoginResponse>> {
+    return this.http.post<SingleResponseModel<LoginResponse>>(
+      `${this.apiUrl}/refresh`,
+      {},
+      { withCredentials: true } // HttpOnly cookie otomatik gönderilir
+    ).pipe(
+      tap(response => {
+        if (response.success) {
+          // Yeni access token'ı her iki storage'a da yaz (hangisi aktifse)
+          const storage = localStorage.getItem('token') ? localStorage : sessionStorage;
+          storage.setItem('token', response.data.accessToken);
+        }
+      })
+    );
+  }
+
+  // --- Revoke (Logout) ---
+  revokeToken(): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/revoke`,
+      {},
+      { withCredentials: true }
+    );
+  }
+
+  // --- Logout ---
   logout() {
-  // Hem kalıcı hem geçici hafızayı süpürüyoruz
-  localStorage.removeItem('token');
-  sessionStorage.removeItem('token');
-  
-  // Eğer başka kullanıcı verileri tutuyorsan onları da burada silmelisin
-  localStorage.removeItem('currentUser');
-  sessionStorage.removeItem('currentUser');
-}
+    // Önce backend'deki token'ı iptal et
+    this.revokeToken().subscribe({
+      next: () => console.log('Refresh token iptal edildi.'),
+      error: () => console.warn('Revoke başarısız oldu, yine de çıkış yapılıyor.')
+    });
 
+    // Ardından local verileri temizle
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
+  }
+
+  // --- Token Helpers ---
   getToken(): string | null {
-  return localStorage.getItem('token') || sessionStorage.getItem('token');
-}
+    return localStorage.getItem('token') || sessionStorage.getItem('token');
+  }
 
   saveToken(token: string, rememberMe: boolean = false) {
-  if (rememberMe) {
-    // Seçiliyse: Tarayıcı kapansa da gitmez
-    localStorage.setItem('token', token);
-  } else {
-    // Seçili değilse: Sekme/Tarayıcı kapanınca silinir
-    sessionStorage.setItem('token', token);
+    if (rememberMe) {
+      localStorage.setItem('token', token);
+    } else {
+      sessionStorage.setItem('token', token);
+    }
   }
-}
 
-isLoggedIn(): boolean {
-  const token = this.getToken();
-  // Burada istersen JWT Helper ile token süresi (expired) kontrolü de yapabilirsin
-  return !!token;
-}
-  
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    return !!token;
+  }
 }
