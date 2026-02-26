@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using IlkProjem.BLL.Services;
+using IlkProjem.Core.Dtos.FileDtos;
 
 namespace IlkProjem.API.Controllers;
 
@@ -21,6 +22,38 @@ public class FilesController : ControllerBase
             return BadRequest("Dosya seçilmedi.");
 
         var result = await _filesService.UploadAsync(file);
-        return Ok(result); // Yüklenen dosyanın bilgilerini (ID, Path vb.) döner
+        return Ok(result);
+    }
+
+    [HttpPut("{id}/assign")]
+    public async Task<IActionResult> Assign(Guid id, [FromBody] FileAssignDto assignDto)
+    {
+        var result = await _filesService.AssignOwnerAsync(id, assignDto);
+        return result ? Ok(new { success = true, message = "Dosya başarıyla bağlandı." })
+                      : NotFound(new { success = false, message = "Dosya bulunamadı." });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetByOwner([FromQuery] string ownerType, [FromQuery] int ownerId)
+    {
+        var files = await _filesService.GetByOwnerAsync(ownerType, ownerId);
+        return Ok(new { success = true, data = files });
+    }
+
+    [HttpGet("{id}/download")]
+    public async Task<IActionResult> Download(Guid id)
+    {
+        try
+        {
+            var fileRecord = await _filesService.GetFileRecordAsync(id);
+            if (fileRecord == null) return NotFound();
+
+            var bytes = await _filesService.DownloadAsync(id);
+            return File(bytes, fileRecord.MimeType, fileRecord.FileName);
+        }
+        catch (FileNotFoundException)
+        {
+            return NotFound("Dosya bulunamadı.");
+        }
     }
 }

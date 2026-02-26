@@ -107,6 +107,10 @@ builder.Services.AddScoped<ICalculatorService, CalculatorService>();
 builder.Services.AddScoped<IExcelService, ExcelService>();
 builder.Services.AddScoped<IFilesService, FilesService>();
 builder.Services.AddScoped<IFilesRepository, FilesRepository>();
+builder.Services.AddScoped<ICarRepository, CarRepository>();
+builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<IHouseRepository, HouseRepository>();
+builder.Services.AddScoped<IHouseService, HouseService>();
 builder.Services.AddScoped<IMailService, MailManager>();
 
 builder.Services.AddControllers()
@@ -136,6 +140,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// --- STATIC FILE SERVING (Yüklenen dosyalar için) ---
+var storagePath = builder.Configuration["FileSettings:StoragePath"]
+    ?? Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+
+if (!Directory.Exists(storagePath))
+    Directory.CreateDirectory(storagePath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(storagePath),
+    RequestPath = "/uploads"
+});
 
 app.UseRouting();
 app.UseCors("AllowAngular");

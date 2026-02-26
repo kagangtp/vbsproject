@@ -29,6 +29,18 @@ public class FilesRepository : IFilesRepository
         return await _context.Files.ToListAsync();
     }
 
+    public async Task<List<Files>> GetByOwnerAsync(string ownerType, int ownerId)
+    {
+        return await _context.Files
+            .Where(f => f.OwnerType == ownerType && f.OwnerId == ownerId)
+            .ToListAsync();
+    }
+
+    public void Update(Files file)
+    {
+        _context.Files.Update(file);
+    }
+
     public void Delete(Files file)
     {
         _context.Files.Remove(file);

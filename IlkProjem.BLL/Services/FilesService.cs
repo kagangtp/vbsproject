@@ -1,8 +1,9 @@
 using FileSignatures;
 using IlkProjem.Core.Models;
+using IlkProjem.Core.Dtos.FileDtos;
 using IlkProjem.DAL.Repositories;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration; // Ayarlar için
+using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 
 namespace IlkProjem.BLL.Services;
@@ -99,5 +100,35 @@ public class FilesService : IFilesService
         await _fileRepository.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<bool> AssignOwnerAsync(Guid fileId, FileAssignDto assignDto)
+    {
+        var file = await _fileRepository.GetByIdAsync(fileId);
+        if (file == null) return false;
+
+        file.OwnerId = assignDto.OwnerId;
+        file.OwnerType = assignDto.OwnerType;
+
+        _fileRepository.Update(file);
+        await _fileRepository.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<List<FileReadDto>> GetByOwnerAsync(string ownerType, int ownerId)
+    {
+        var files = await _fileRepository.GetByOwnerAsync(ownerType, ownerId);
+        return files.Select(f => new FileReadDto
+        {
+            Id = f.Id,
+            FileName = f.FileName,
+            MimeType = f.MimeType,
+            RelativePath = f.RelativePath
+        }).ToList();
+    }
+
+    public async Task<Files?> GetFileRecordAsync(Guid fileId)
+    {
+        return await _fileRepository.GetByIdAsync(fileId);
     }
 }

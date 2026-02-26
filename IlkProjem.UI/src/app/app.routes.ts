@@ -8,28 +8,39 @@ import { loginGuard } from './core/guards/login-guard';
 import { Landingpage } from './layout/landingpage/landingpage';
 import { NotFound } from './layout/not-found/not-found';
 import { Unauthorized } from './layout/unauthorized/unauthorized';
+import { CustomerAssets } from './features/customer-assets/customer-assets';
+import { AddCar } from './features/add-car/add-car';
+import { AddHouse } from './features/add-house/add-house';
+import { EditCar } from './features/edit-car/edit-car';
+import { EditHouse } from './features/edit-house/edit-house';
+import { SendEmail } from './features/send-email/send-email';
 
 export const routes: Routes = [
   { path: 'register', component: RegistrationPage },
-  { 
-    path: 'login', 
-    component: Loginpage, 
-    canActivate: [loginGuard] // 👈 Bunu ekledik
+  {
+    path: 'login',
+    component: Loginpage,
+    canActivate: [loginGuard]
   },
 
   {
     path: 'mainpage',
     component: Mainpage,
-    canActivate: [authGuard], // 🔐 Ana kapıya kilidi vurduk; artık bypass imkansız!
+    canActivate: [authGuard],
     children: [
       { path: 'dashboard', component: Dashboard },
-      
-      // Buraya Customers, Accounts vb. eklediğinde onlar da otomatik korunur
+      { path: 'customer/:id/assets', component: CustomerAssets },
+      { path: 'customer/:id/add-car', component: AddCar },
+      { path: 'customer/:id/add-house', component: AddHouse },
+      { path: 'customer/:id/edit-car/:carId', component: EditCar },
+      { path: 'customer/:id/edit-house/:houseId', component: EditHouse },
+      { path: 'send-email', component: SendEmail },
+
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
   { path: '', component: Landingpage },
-  { path: 'not-found', component: NotFound},
-  { path: 'unauthorized', component: Unauthorized},
+  { path: 'not-found', component: NotFound },
+  { path: 'unauthorized', component: Unauthorized },
   { path: '**', redirectTo: 'not-found' }
 ];

@@ -19,6 +19,11 @@
       <span class="icon">💰</span>
       <span>{{ 'SIDEBAR.TRANSACTIONS' | translate }}</span>
     </a>
+
+    <a routerLink="/mainpage/send-email" routerLinkActive="active" class="nav-link">
+      <span class="icon">✉️</span>
+      <span>{{ 'SIDEBAR.EMAIL' | translate }}</span>
+    </a>
   </div>
 
   <div class="sidebar-footer">
@@ -26,7 +31,7 @@
       <span class="icon">⚙️</span>
       <span>{{ 'SIDEBAR.SETTINGS' | translate }}</span>
     </a>
-    
+
     <button (click)="onLogout()" class="logout-button">
       <span class="icon">🚪</span>
       <span>{{ 'SIDEBAR.LOGOUT' | translate }}</span>

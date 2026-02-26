@@ -50,6 +50,7 @@
         <span class="date-text">{{ customer.createdAt | date:'dd MMM yyyy' }}</span>
       </div>
       <div class="col-actions text-center">
+        <button class="btn-icon assets" (click)="goToAssets(customer.id)" title="Varlıklar">📁</button>
         <button class="btn-icon edit" (click)="onEdit(customer)" [title]="'MODALS.EDIT_TITLE' | translate">✏️</button>
         <button class="btn-icon delete" (click)="onDelete(customer.id)" title="Sil">🗑️</button>
       </div>

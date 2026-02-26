@@ -36,6 +36,7 @@
     "CUSTOMERS": "Müşteriler",
     "ACCOUNTS": "Hesaplar",
     "TRANSACTIONS": "İşlemler",
+    "EMAIL": "E-posta",
     "SETTINGS": "Ayarlar",
     "LOGOUT": "Çıkış Yap"
   },
@@ -104,5 +105,75 @@
     "ERROR_404": "Aradığınız kaynak bulunamadı.",
     "ERROR_500": "Sunucu hatası oluştu. Lütfen daha sonra tekrar deneyin.",
     "ERROR_NETWORK": "Sunucuya bağlanılamıyor. İnternet bağlantınızı kontrol edin."
+  },
+  "COMMON": {
+    "BACK": "Geri",
+    "CANCEL": "İptal",
+    "SAVE": "Kaydet",
+    "SAVING": "Kaydediliyor...",
+    "UPDATE": "Güncelle",
+    "DESCRIPTION": "Açıklama",
+    "DESCRIPTION_PLACEHOLDER": "Opsiyonel açıklama...",
+    "IMAGES": "Resimler",
+    "SELECT_FILE": "Dosya Seç",
+    "FILES_SELECTED": "dosya seçildi",
+    "ERROR_GENERIC": "Bir hata oluştu."
+  },
+  "CUSTOMER_ASSETS_PAGE": {
+    "HOUSES_TITLE": "Evler",
+    "ADD_HOUSE": "Ev Ekle",
+    "CARS_TITLE": "Arabalar",
+    "ADD_CAR": "Araba Ekle",
+    "NO_IMAGES": "Resim yok",
+    "NO_HOUSES": "Henüz ev eklenmemiş.",
+    "NO_CARS": "Henüz araba eklenmemiş."
+  },
+  "ADD_CAR_PAGE": {
+    "TITLE": "Yeni Araba Ekle",
+    "PLATE_LABEL": "Plaka *",
+    "PLATE_PLACEHOLDER": "34 ABC 123",
+    "SUCCESS": "Araba başarıyla eklendi.",
+    "SUCCESS_WITH_FILES": "Araba ve dosyalar başarıyla eklendi.",
+    "FILE_ASSIGN_ERROR": "Araba eklendi ancak dosya bağlama sırasında hata oluştu.",
+    "FILE_UPLOAD_ERROR": "Araba eklendi ancak dosya yükleme sırasında hata oluştu.",
+    "ADD_ERROR": "Araba eklenemedi."
+  },
+  "ADD_HOUSE_PAGE": {
+    "TITLE": "Yeni Ev Ekle",
+    "ADDRESS_LABEL": "Adres *",
+    "ADDRESS_PLACEHOLDER": "Örn: Beşiktaş, İstanbul",
+    "SUCCESS": "Ev başarıyla eklendi.",
+    "SUCCESS_WITH_FILES": "Ev ve dosyalar başarıyla eklendi.",
+    "FILE_ASSIGN_ERROR": "Ev eklendi ancak dosya bağlama sırasında hata oluştu.",
+    "FILE_UPLOAD_ERROR": "Ev eklendi ancak dosya yükleme sırasında hata oluştu.",
+    "ADD_ERROR": "Ev eklenemedi."
+  },
+  "EDIT_CAR_PAGE": {
+    "TITLE": "Araba Düzenle",
+    "PLATE_LABEL": "Plaka *",
+    "PLATE_PLACEHOLDER": "34 ABC 123",
+    "SUCCESS": "Araba güncellendi.",
+    "UPDATE_ERROR": "Güncelleme başarısız."
+  },
+  "EDIT_HOUSE_PAGE": {
+    "TITLE": "Ev Düzenle",
+    "ADDRESS_LABEL": "Adres *",
+    "ADDRESS_PLACEHOLDER": "Örn: Beşiktaş, İstanbul",
+    "SUCCESS": "Ev güncellendi.",
+    "UPDATE_ERROR": "Güncelleme başarısız."
+  },
+  "SEND_EMAIL_PAGE": {
+    "TITLE": "E-posta Gönder",
+    "TO_LABEL": "Alıcı *",
+    "TO_PLACEHOLDER": "ornek@email.com",
+    "SUBJECT_LABEL": "Konu *",
+    "SUBJECT_PLACEHOLDER": "E-posta konusu",
+    "BODY_LABEL": "Mesaj *",
+    "BODY_PLACEHOLDER": "Mesajınızı buraya yazın...",
+    "SEND": "Gönder",
+    "SENDING": "Gönderiliyor...",
+    "CLEAR": "Temizle",
+    "SUCCESS": "E-posta başarıyla gönderildi.",
+    "ERROR": "E-posta gönderilemedi."
   }
 }

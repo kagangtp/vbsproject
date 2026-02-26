@@ -1,4 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; // 1. Bunları ekle
@@ -25,6 +26,7 @@ export class Dashboard implements OnInit, OnDestroy {
   private fb = inject(FormBuilder); // 3. FormBuilder'ı inject et
   private toastr = inject(ToastrService);
   private translate = inject(TranslateService);
+  private router = inject(Router);
 
   customers: Customer[] = [];
   displayCustomers: Customer[] = [];
@@ -251,6 +253,10 @@ export class Dashboard implements OnInit, OnDestroy {
   //   this.params.searchTerm = value;
   //   this.searchSubject.next(value); // Debounce (400ms) burada devreye girer
   // }
+
+  goToAssets(customerId: number) {
+    this.router.navigate(['/mainpage/customer', customerId, 'assets']);
+  }
 
 }
 
