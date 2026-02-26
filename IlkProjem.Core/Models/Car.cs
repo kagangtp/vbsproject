@@ -1,6 +1,6 @@
 namespace IlkProjem.Core.Models;
 
-public class Car
+public class Car : BaseEntity
 {
     public int Id { get; set; }
     public required string Plate { get; set; } // Plaka

@@ -13,6 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Text;
 using System.Threading.RateLimiting;
+using IlkProjem.Core.Interfaces;
+using IlkProjem.DAL.Interceptors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,8 +46,10 @@ builder.Services.AddOpenApi(options =>
 });
 
 // --- 3. DATABASE & SERVICES (BLL/DAL) ---
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<AuditSaveChangesInterceptor>();
+builder.Services.AddDbContext<AppDbContext>((sp, options) =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .AddInterceptors(sp.GetRequiredService<AuditSaveChangesInterceptor>()));
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 builder.Services.AddAuthentication(x =>
@@ -97,6 +101,8 @@ builder.Services.AddRateLimiter(options =>
     options.RejectionStatusCode = 429; // Too Many Requests
 });
 
+builder.Services.AddHttpContextAccessor(); // HttpContext'e erişim için şart
+
 // Dependency Injection matching your Business/DataAccess layers
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -112,6 +118,7 @@ builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IHouseRepository, HouseRepository>();
 builder.Services.AddScoped<IHouseService, HouseService>();
 builder.Services.AddScoped<IMailService, MailManager>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => {

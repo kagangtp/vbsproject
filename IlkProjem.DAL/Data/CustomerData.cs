@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using IlkProjem.Core.Models;
+using System.Linq.Expressions;
 
 namespace IlkProjem.DAL.Data;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
 
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<User> Users => Set<User>();
@@ -49,5 +52,19 @@ public class AppDbContext : DbContext
 
             entity.HasIndex(rt => rt.Token).IsUnique();
         });
+
+        // 4. Global Query Filter: BaseEntity'den türeyen tüm entity'ler için
+        //    IsDeleted == false olanları otomatik filtreler
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+            {
+                var parameter = Expression.Parameter(entityType.ClrType, "e");
+                var property = Expression.Property(parameter, nameof(BaseEntity.IsDeleted));
+                var falseConstant = Expression.Constant(false);
+                var filter = Expression.Lambda(Expression.Equal(property, falseConstant), parameter);
+                modelBuilder.Entity(entityType.ClrType).HasQueryFilter(filter);
+            }
+        }
     }
 }

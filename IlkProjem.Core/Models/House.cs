@@ -1,6 +1,6 @@
 namespace IlkProjem.Core.Models;
 
-public class House
+public class House : BaseEntity
 {
     public int Id { get; set; }
     public required string Address { get; set; }

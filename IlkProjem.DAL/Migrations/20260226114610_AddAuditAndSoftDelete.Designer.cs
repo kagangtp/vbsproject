@@ -3,6 +3,7 @@ using System;
 using IlkProjem.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IlkProjem.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260226114610_AddAuditAndSoftDelete")]
+    partial class AddAuditAndSoftDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,15 +66,6 @@ namespace IlkProjem.DAL.Migrations
                     b.Property<string>("Plate")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("UpdatedByUserId")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -124,15 +118,6 @@ namespace IlkProjem.DAL.Migrations
 
                     b.Property<Guid?>("ProfileImageId")
                         .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("UpdatedByUserId")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -228,15 +213,6 @@ namespace IlkProjem.DAL.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("UpdatedByUserId")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

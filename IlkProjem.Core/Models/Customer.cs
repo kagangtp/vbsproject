@@ -1,12 +1,11 @@
 namespace IlkProjem.Core.Models;
 
-public class Customer
+public class Customer : BaseEntity
 {
     public int Id { get; set; } 
     public required string Name { get; set; }
     public string? Email { get; set; }
     public decimal Balance { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // --- DOSYA BAĞLANTISI BURADA BAŞLIYOR ---
     
