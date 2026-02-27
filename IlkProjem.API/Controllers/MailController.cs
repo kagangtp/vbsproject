@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using IlkProjem.BLL.Interfaces;
 using IlkProjem.Core.Dtos.MailDtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IlkProjem.API.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class MailController : ControllerBase

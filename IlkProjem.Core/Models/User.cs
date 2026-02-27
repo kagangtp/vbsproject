@@ -7,7 +7,7 @@ public class User
     public required string Email { get; set; }
     
     // Rolleri tutmak için: "Admin", "Manager", "Staff" vb.
-    public string Role { get; set; } 
+    public string? Role { get; set; } 
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     

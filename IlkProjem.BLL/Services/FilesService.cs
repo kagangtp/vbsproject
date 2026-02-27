@@ -1,4 +1,6 @@
 using FileSignatures;
+using IlkProjem.Core.Enums;
+using IlkProjem.Core.Exceptions;
 using IlkProjem.Core.Models;
 using IlkProjem.Core.Dtos.FileDtos;
 using IlkProjem.DAL.Repositories;
@@ -72,13 +74,13 @@ public class FilesService : IFilesService
     {
         // 2. ADIM: Veri tabanından dosya bilgisini bul
         var fileRecord = await _fileRepository.GetByIdAsync(fileId);
-        if (fileRecord == null) throw new FileNotFoundException("Dosya kaydı bulunamadı.");
+        if (fileRecord == null) throw new BusinessException(BusinessErrorCode.FileRecordNotFound, "Dosya kaydı bulunamadı.");
 
         // Fiziksel yolu inşa et
         var physicalPath = Path.Combine(_uploadRoot, fileRecord.RelativePath);
 
         if (!File.Exists(physicalPath))
-            throw new FileNotFoundException("Dosya diskte bulunamadı.");
+            throw new BusinessException(BusinessErrorCode.FileNotFoundOnDisk, "Dosya diskte bulunamadı.");
 
         return await File.ReadAllBytesAsync(physicalPath);
     }

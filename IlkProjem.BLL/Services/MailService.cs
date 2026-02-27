@@ -4,6 +4,8 @@ using MimeKit;
 using Microsoft.Extensions.Configuration;
 using IlkProjem.BLL.Interfaces;
 using IlkProjem.Core.Dtos.MailDtos;
+using IlkProjem.Core.Enums;
+using IlkProjem.Core.Exceptions;
 
 namespace IlkProjem.BLL.Services;
 
@@ -21,9 +23,9 @@ public class MailManager : IMailService
         var email = new MimeMessage();
         
         // Gönderen Bilgisi (appsettings'ten çekilebilir)
-        email.From.Add(MailboxAddress.Parse(_configuration["MailSettings:Mail"]));
+        email.From.Add(MailboxAddress.Parse(_configuration["MailSettings:Mail"] ?? ""));
         email.To.Add(MailboxAddress.Parse(mailDto.To));
-        email.Subject = mailDto.Subject;
+        email.Subject = mailDto.Subject ?? "No Subject";
 
         var builder = new BodyBuilder();
         builder.HtmlBody = mailDto.Body;
@@ -34,7 +36,7 @@ public class MailManager : IMailService
         // SMTP Bağlantı Ayarları
         await smtp.ConnectAsync(
             _configuration["MailSettings:Host"], 
-            int.Parse(_configuration["MailSettings:Port"]), 
+            int.Parse(_configuration["MailSettings:Port"] ?? ""), 
             SecureSocketOptions.StartTls
         );
 
@@ -49,6 +51,6 @@ public class MailManager : IMailService
 
     public Task SendMailAsync1(MailDto mailDto)
     {
-        throw new NotImplementedException();
+        throw new BusinessException(BusinessErrorCode.MailNotImplemented, "Bu metod henüz implemente edilmedi.");
     }
 }

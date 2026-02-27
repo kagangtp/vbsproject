@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading.RateLimiting;
 using IlkProjem.Core.Interfaces;
 using IlkProjem.DAL.Interceptors;
+using IlkProjem.API.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +53,7 @@ builder.Services.AddDbContext<AppDbContext>((sp, options) =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
            .AddInterceptors(sp.GetRequiredService<AuditSaveChangesInterceptor>()));
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? "");
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -135,9 +137,19 @@ builder.Services.AddCors(options =>
                         .AllowCredentials()); // HttpOnly cookie'ler için gerekli
 });
 
+// --- 6. SERILOG SETUP (PostgreSQL'e loglama) ---
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.PostgreSQL(builder.Configuration.GetConnectionString("DefaultConnection"), "ServiceLog")
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
-// --- 6. MIDDLEWARE PIPELINE ("Interceptors") ---
+// --- 7. MIDDLEWARE PIPELINE ("Interceptors") ---
 // This acts as the server-side interceptor for Content Language
 var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
 app.UseRequestLocalization(locOptions.Value);
@@ -148,7 +160,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// --- STATIC FILE SERVING (Yüklenen dosyalar için) ---
+// --- 8. STATIC FILE SERVING (Yüklenen dosyalar için) ---
 var storagePath = builder.Configuration["FileSettings:StoragePath"]
     ?? Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
 
@@ -163,6 +175,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.UseRouting();
 app.UseCors("AllowAngular");
+app.UseMiddleware<LoggingMiddleware>();
 app.UseRateLimiter();
 
 app.UseAuthentication();    // "Sen kimsin?" (JWT kontrolü)
@@ -173,7 +186,7 @@ app.MapControllers().RequireRateLimiting("PerUser");
 
 
 
-// --- 7. SEED DATA ---
+// --- 9. SEED DATA ---
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();

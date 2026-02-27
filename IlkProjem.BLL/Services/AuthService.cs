@@ -4,6 +4,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using IlkProjem.BLL.Interfaces;
+using IlkProjem.Core.Enums;
+using IlkProjem.Core.Exceptions;
 using Microsoft.Extensions.Configuration;
 using IlkProjem.Core.Dtos.AuthDtos;
 using IlkProjem.Core.Models;
@@ -166,7 +168,7 @@ public class AuthService : IAuthService
 
     private string GenerateJwtToken(User user, DateTime expiresAt)
     {
-        var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is missing");
+        var jwtKey = _configuration["Jwt:Key"] ?? throw new BusinessException(BusinessErrorCode.AuthJwtKeyMissing, "JWT Key is missing in configuration.");
         var key = Encoding.ASCII.GetBytes(jwtKey);
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -176,7 +178,7 @@ public class AuthService : IAuthService
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role ?? "No Role")
             }),
             Expires = expiresAt,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),

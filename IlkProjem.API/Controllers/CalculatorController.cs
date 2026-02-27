@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using IlkProjem.BLL.Services;
 using IlkProjem.BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using IlkProjem.Core.Exceptions;
 
 namespace IlkProjem.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CalculatorController : ControllerBase

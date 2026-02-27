@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using IlkProjem.BLL.Services;
 using IlkProjem.Core.Dtos.FileDtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IlkProjem.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class FilesController : ControllerBase

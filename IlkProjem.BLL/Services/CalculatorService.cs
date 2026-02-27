@@ -1,4 +1,6 @@
 using IlkProjem.BLL.Interfaces;
+using IlkProjem.Core.Enums;
+using IlkProjem.Core.Exceptions;
 using IlkProjem.DAL.Repositories;
 
 namespace IlkProjem.BLL.Services;
@@ -21,7 +23,7 @@ public class CalculatorService : ICalculatorService
     public decimal Divide(decimal a, decimal b)
     {
         if (b == 0) 
-            throw new DivideByZeroException("A number cannot be divided by zero.");
+            throw new BusinessException(BusinessErrorCode.CalculatorDivideByZero, "A number cannot be divided by zero.");
             
         return a / b;
     }
