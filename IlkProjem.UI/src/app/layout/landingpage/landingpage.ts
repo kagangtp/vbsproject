@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { LanguageChanger } from '../../shared/components/language-changer/language-changer';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [TranslateModule],
+  imports: [TranslateModule, LanguageChanger],
   templateUrl: './landingpage.html',
   styleUrls: ['./landingpage.css']
 })
@@ -21,10 +22,5 @@ export class Landingpage {
 
   goToLogin() {
     this.router.navigate(['/login']);
-  }
-
-  changeLanguage(lang: string) {
-    localStorage.setItem('language', lang);
-    window.location.reload();
   }
 }

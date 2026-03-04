@@ -3,8 +3,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0f172a; /* Daha güvenli hissettiren koyu lacivert/siyah */
-  font-family: 'Inter', sans-serif;
+  background-color: #0f172a;
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-body);
   overflow: hidden;
 }
 
@@ -31,7 +32,8 @@
 
 .status-title {
   font-size: 28px;
-  color: #6366f1; /* Senin mor rengin */
+  color: #6366f1;
+  /* Senin mor rengin */
   font-weight: 800;
   margin-top: 20px;
 }
@@ -63,6 +65,11 @@
 
 /* Kilit sallanma animasyonu */
 @keyframes shake {
-  from { transform: rotate(-5deg); }
-  to { transform: rotate(5deg); }
+  from {
+    transform: rotate(-5deg);
+  }
+
+  to {
+    transform: rotate(5deg);
+  }
 }

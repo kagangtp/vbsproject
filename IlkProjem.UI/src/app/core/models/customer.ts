@@ -4,4 +4,6 @@ export interface Customer {
   email: string;     // .NET string -> TS string
   balance: number;   // .NET decimal/double -> TS number
   createdAt: string; // .NET DateTime -> TS string (ISO Format)
+  profileImageId?: string | null; // .NET Guid? -> TS string | null
+  profileImagePath?: string | null; // Static file relative path
 }

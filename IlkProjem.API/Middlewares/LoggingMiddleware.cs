@@ -1,11 +1,12 @@
-
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Text;
 using IlkProjem.Core.Exceptions;
 using IlkProjem.Core.Models;
 using IlkProjem.DAL.Data;
 
 namespace IlkProjem.API.Middlewares;
+
 public class LoggingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -16,22 +17,22 @@ public class LoggingMiddleware
     {
         var watch = Stopwatch.StartNew();
 
-        // 1. Request'i Yakala
+        // 1. Request Body'yi Oku
         context.Request.EnableBuffering();
-        var requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync();
+        var requestBody = await new StreamReader(context.Request.Body, Encoding.UTF8).ReadToEndAsync();
         context.Request.Body.Position = 0;
 
-        // 2. Response'u Yakalamak İçin Stream Hazırla
+        // 2. Response'u yakalamak için Stream ayarla
         var originalBodyStream = context.Response.Body;
-        using var responseBody = new MemoryStream();
-        context.Response.Body = responseBody;
+        using var responseBodyProxy = new MemoryStream();
+        context.Response.Body = responseBodyProxy;
 
         string? innerErrorCode = null;
         string? exceptionMessage = null;
 
         try
         {
-            await _next(context); // Business katmanına gönder
+            await _next(context); // Controller'a git
         }
         catch (Exception ex)
         {
@@ -40,14 +41,13 @@ public class LoggingMiddleware
             if (ex is BusinessException bEx)
             {
                 innerErrorCode = bEx.ErrorCode.ToString();
-                context.Response.StatusCode = 400; // Business hataları → 400
+                context.Response.StatusCode = 400;
             }
             else
             {
-                context.Response.StatusCode = 500; // Beklenmeyen hatalar → 500
+                context.Response.StatusCode = 500;
             }
 
-            // Hata response'unu yaz (GlobalExceptionHandler'a gerek kalmadan)
             context.Response.ContentType = "application/json";
             var errorResponse = System.Text.Json.JsonSerializer.Serialize(new
             {
@@ -60,15 +60,27 @@ public class LoggingMiddleware
         {
             watch.Stop();
 
-            // 3. Kullanıcı bilgisini al (Authentication çalıştıktan sonra)
+            // 3. Response içeriğini güvenli bir şekilde oku
+            string responseText = string.Empty;
+            var contentType = context.Response.ContentType ?? "";
+
+            // EĞER RESPONSE BİR DOSYA (EXCEL, IMAGE VB.) İSE STRING OLARAK OKUMA
+            bool isBinaryResponse = contentType.Contains("application/vnd.openxmlformats-officedocument") || 
+                                    contentType.Contains("application/octet-stream") ||
+                                    contentType.Contains("image/");
+
+            if (!isBinaryResponse && responseBodyProxy.Length > 0)
+            {
+                responseBodyProxy.Position = 0;
+                responseText = await new StreamReader(responseBodyProxy, Encoding.UTF8).ReadToEndAsync();
+            }
+            else if (isBinaryResponse)
+            {
+                responseText = $"[Binary Content: {contentType}]";
+            }
+
+            // 4. Log kaydı oluştur
             var userId = context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            // 4. Response'u Oku
-            responseBody.Position = 0;
-            var responseText = await new StreamReader(responseBody).ReadToEndAsync();
-            responseBody.Position = 0;
-
-            // 4. Log kaydını oluştur ve veritabanına yaz
             var log = new ServiceLog
             {
                 Path = context.Request.Path,
@@ -79,14 +91,26 @@ public class LoggingMiddleware
                 InternalErrorCode = innerErrorCode,
                 Exception = exceptionMessage,
                 DurationMs = watch.ElapsedMilliseconds,
-                UserId = userId
+                UserId = userId,
+                Timestamp = DateTime.UtcNow // Eğer BaseEntity'den gelmiyorsa elle ekledik
             };
 
-            dbContext.ServiceLog.Add(log);
-            await dbContext.SaveChangesAsync();
+            // 5. Logu kaydederken hata oluşursa asıl işlemi (Excel'i) bozma
+            try 
+            {
+                dbContext.ServiceLog.Add(log);
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception dbEx)
+            {
+                // Loglama hatasını sadece konsola yaz, uygulama durmasın
+                Console.WriteLine($"KRİTİK HATA: Log DB'ye yazılamadı: {dbEx.Message}");
+            }
 
-            // 5. Orijinal stream'e kopyala (response client'a gitsin)
-            await responseBody.CopyToAsync(originalBodyStream);
+            // 6. Response'u orjinal akışa geri ver (Kullanıcı dosyayı indirebilsin)
+            responseBodyProxy.Position = 0;
+            await responseBodyProxy.CopyToAsync(originalBodyStream);
+            context.Response.Body = originalBodyStream;
         }
     }
 }

@@ -8,4 +8,6 @@ public class CustomerReadDto
     public string? Email { get; set; }
     public decimal Balance { get; set; }
     public DateTime CreatedAt { get; set; }
+    public Guid? ProfileImageId { get; set; }
+    public string? ProfileImagePath { get; set; }
 }

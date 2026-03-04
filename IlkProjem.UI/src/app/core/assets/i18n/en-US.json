@@ -126,7 +126,8 @@
     "ADD_CAR": "Add Car",
     "NO_IMAGES": "No images",
     "NO_HOUSES": "No houses added yet.",
-    "NO_CARS": "No cars added yet."
+    "NO_CARS": "No cars added yet.",
+    "ADD_PROFILE_PHOTO": "Add Profile Photo"
   },
   "ADD_CAR_PAGE": {
     "TITLE": "Add New Car",
@@ -175,5 +176,8 @@
     "CLEAR": "Clear",
     "SUCCESS": "Email sent successfully.",
     "ERROR": "Failed to send email."
+  },
+  "SPINNER": {
+    "LOADING": "Loading..."
   }
 }

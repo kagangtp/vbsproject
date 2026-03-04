@@ -126,7 +126,8 @@
     "ADD_CAR": "Araba Ekle",
     "NO_IMAGES": "Resim yok",
     "NO_HOUSES": "Henüz ev eklenmemiş.",
-    "NO_CARS": "Henüz araba eklenmemiş."
+    "NO_CARS": "Henüz araba eklenmemiş.",
+    "ADD_PROFILE_PHOTO": "Profil Fotoğrafı Ekle"
   },
   "ADD_CAR_PAGE": {
     "TITLE": "Yeni Araba Ekle",
@@ -175,5 +176,8 @@
     "CLEAR": "Temizle",
     "SUCCESS": "E-posta başarıyla gönderildi.",
     "ERROR": "E-posta gönderilemedi."
+  },
+  "SPINNER": {
+    "LOADING": "Yükleniyor..."
   }
 }

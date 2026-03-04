@@ -7,13 +7,7 @@
   </div>
 
   <div class="nav-right">
-    <div class="lang-dropdown">
-      <button class="dropbtn">🌐</button>
-      <div class="dropdown-content">
-        <a (click)="changeLanguage('tr-TR')">🇹🇷 Türkçe</a>
-        <a (click)="changeLanguage('en-US')">🇺🇸 English</a>
-      </div>
-    </div>
+    <app-language-changer />
 
     <div class="user-info">
       <span class="user-name">{{ userName }}</span>

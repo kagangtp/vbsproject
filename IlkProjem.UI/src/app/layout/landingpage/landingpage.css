@@ -1,9 +1,9 @@
 /* --- GENEL AYARLAR --- */
 .landing-page {
     background-color: #fcfcfd;
-    /* Görseldeki ferah zemin rengi */
     min-height: 100vh;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-body);
     color: #1a1d23;
 }
 

@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/authService';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-loginpage',
   standalone: true,
-  imports: [FormsModule, TranslateModule],
+  imports: [FormsModule, TranslateModule, RouterLink],
   templateUrl: './loginpage.html',
   styleUrl: './loginpage.css',
 })

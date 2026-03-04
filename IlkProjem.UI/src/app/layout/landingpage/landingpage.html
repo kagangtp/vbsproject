@@ -1,7 +1,7 @@
 <div class="landing-page">
   <nav class="top-nav">
     <div class="logo">
-      <img src="assets/bank-icon.png" alt="">
+      <span class="logo-icon">🏦</span>
       <span>BankApp</span>
     </div>
     <div class="nav-links">
@@ -12,13 +12,7 @@
       <button class="btn-primary-custom" (click)="goToDashboard()">{{ 'LANDING_PAGE.START_BUTTON' | translate
         }}</button>
 
-      <div class="lang-dropdown">
-        <button class="dropbtn">🌐</button>
-        <div class="dropdown-content">
-          <a (click)="changeLanguage('tr-TR')">🇹🇷 Türkçe</a>
-          <a (click)="changeLanguage('en-US')">🇺🇸 English</a>
-        </div>
-      </div>
+      <app-language-changer></app-language-changer>
     </div>
   </nav>
 

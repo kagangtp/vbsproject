@@ -5,13 +5,14 @@ import { House } from '../models/house';
 import { SingleResponseModel } from '../models/responses/single-response-model';
 import { ListResponseModel } from '../models/responses/list-response-model';
 import { ResponseModel } from '../models/responses/response-model';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
     providedIn: 'root',
 })
 export class HouseService {
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:5005/api/House';
+    private apiUrl = environment.apiUrl + '/House';
 
     getHousesByCustomer(customerId: number): Observable<ListResponseModel<House>> {
         return this.http.get<ListResponseModel<House>>(`${this.apiUrl}/customer/${customerId}`);

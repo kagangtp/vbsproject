@@ -17,6 +17,7 @@ using IlkProjem.Core.Interfaces;
 using IlkProjem.DAL.Interceptors;
 using IlkProjem.API.Middlewares;
 using Serilog;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -121,6 +122,9 @@ builder.Services.AddScoped<IHouseRepository, HouseRepository>();
 builder.Services.AddScoped<IHouseService, HouseService>();
 builder.Services.AddScoped<IMailService, MailManager>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+// --- FluentValidation: Register all validators from BLL assembly ---
+builder.Services.AddValidatorsFromAssemblyContaining<IlkProjem.BLL.ValidationRules.FluentValidation.CustomerDtoValidators.CustomerCreateDtoValidator>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => {

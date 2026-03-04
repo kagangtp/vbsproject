@@ -8,13 +8,14 @@ import { ListResponseModel } from '../models/responses/list-response-model';
 import { SingleResponseModel } from '../models/responses/single-response-model';
 import { ResponseModel } from '../models/responses/response-model';
 import { CustomerParams } from '../models/params/customer-params';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomerService {
   private http = inject(HttpClient); // 3. Http bağımlılığını enjekte et
-  private apiUrl = 'http://localhost:5005/api/Customer'; // 4. Backend portunu buraya yaz
+  private apiUrl = environment.apiUrl + '/Customer'; // 4. Backend portunu buraya yaz
 
   // "Getir" - Now expects the ListResponseModel wrapper
   getCustomers(params: CustomerParams): Observable<ListResponseModel<Customer>> {

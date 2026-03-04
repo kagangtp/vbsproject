@@ -24,7 +24,7 @@ public class FilesController : ControllerBase
             return BadRequest("Dosya seçilmedi.");
 
         var result = await _filesService.UploadAsync(file);
-        return Ok(result);
+        return Ok(new { success = true, data = result });
     }
 
     [HttpPut("{id}/assign")]

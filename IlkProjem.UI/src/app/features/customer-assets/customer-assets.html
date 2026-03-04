@@ -1,11 +1,22 @@
 <div class="assets-wrapper">
     <!-- Header -->
     <div class="assets-header">
-        <button class="btn-back" (click)="goBack()">← {{ 'COMMON.BACK' | translate }}</button>
-        <div class="customer-info" *ngIf="customer">
-            <h1>{{ customer.name }}</h1>
-            <p>{{ customer.email }}</p>
+        <div class="profile-header-flex">
+            <button class="btn-back" (click)="goBack()">← {{ 'COMMON.BACK' | translate }}</button>
+            <div class="profile-avatar">
+                <img [src]="profileImageUrl" [alt]="customer?.name" (error)="handleImageError()" />
+            </div>
+            <div class="profile-details">
+                <h1>{{ customer?.name }}</h1>
+                <p>{{ customer?.email }}</p>
+            </div>
         </div>
+
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden />
+
+        <button class="btn-add-profile-photo" (click)="triggerFileUpload()">
+            + {{ 'CUSTOMER_ASSETS_PAGE.ADD_PROFILE_PHOTO' | translate }}
+        </button>
     </div>
 
     <!-- Houses Section -->
@@ -27,8 +38,7 @@
                 <div class="images-row" *ngIf="house.images && house.images.length > 0">
                     @for (img of house.images; track img.id) {
                     <div class="image-thumb" (click)="openLightbox(img.relativePath, img.fileName)">
-                        <img [src]="'http://localhost:5005/uploads/' + img.relativePath" [alt]="img.fileName"
-                            loading="lazy" />
+                        <img [src]="rootUrl + '/uploads/' + img.relativePath" [alt]="img.fileName" loading="lazy" />
                     </div>
                     }
                 </div>
@@ -63,8 +73,7 @@
                 <div class="images-row" *ngIf="car.images && car.images.length > 0">
                     @for (img of car.images; track img.id) {
                     <div class="image-thumb" (click)="openLightbox(img.relativePath, img.fileName)">
-                        <img [src]="'http://localhost:5005/uploads/' + img.relativePath" [alt]="img.fileName"
-                            loading="lazy" />
+                        <img [src]="rootUrl + '/uploads/' + img.relativePath" [alt]="img.fileName" loading="lazy" />
                     </div>
                     }
                 </div>

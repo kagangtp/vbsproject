@@ -20,7 +20,10 @@ public class CustomerRepository : ICustomerRepository
     
     }
 
-    public async Task<Customer?> GetByIdAsync(int id, CancellationToken ct = default) => await _context.Customers.FindAsync(new object[] { id }, ct);
+    public async Task<Customer?> GetByIdAsync(int id, CancellationToken ct = default) =>
+        await _context.Customers
+            .Include(c => c.ProfileImage)
+            .FirstOrDefaultAsync(c => c.Id == id, ct);
 
     public async Task AddAsync(Customer customer, CancellationToken ct = default)
     {

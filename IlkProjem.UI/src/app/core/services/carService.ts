@@ -5,13 +5,14 @@ import { Car } from '../models/car';
 import { SingleResponseModel } from '../models/responses/single-response-model';
 import { ListResponseModel } from '../models/responses/list-response-model';
 import { ResponseModel } from '../models/responses/response-model';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CarService {
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:5005/api/Car';
+    private apiUrl = environment.apiUrl + '/Car';
 
     getCarsByCustomer(customerId: number): Observable<ListResponseModel<Car>> {
         return this.http.get<ListResponseModel<Car>>(`${this.apiUrl}/customer/${customerId}`);

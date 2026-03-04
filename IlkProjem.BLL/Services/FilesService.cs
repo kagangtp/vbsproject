@@ -13,11 +13,13 @@ namespace IlkProjem.BLL.Services;
 public class FilesService : IFilesService
 {
     private readonly IFilesRepository _fileRepository;
+    private readonly ICustomerRepository _customerRepository;
     private readonly string _uploadRoot;
 
-    public FilesService(IFilesRepository fileRepository, IConfiguration configuration)
+    public FilesService(IFilesRepository fileRepository, ICustomerRepository customerRepository, IConfiguration configuration)
     {
         _fileRepository = fileRepository;
+        _customerRepository = customerRepository;
         
         // 1. ADIM: appsettings.json'daki yolu oku (Örn: /Users/kagan/Desktop/bankAppFiles)
         var pathFromConfig = configuration["FileSettings:StoragePath"];
@@ -113,6 +115,18 @@ public class FilesService : IFilesService
         file.OwnerType = assignDto.OwnerType;
 
         _fileRepository.Update(file);
+
+        // If assigning to a Customer, update their ProfileImageId
+        if (assignDto.OwnerType == "Customer")
+        {
+            var customer = await _customerRepository.GetByIdAsync(assignDto.OwnerId);
+            if (customer != null)
+            {
+                customer.ProfileImageId = fileId;
+                await _customerRepository.UpdateAsync(customer);
+            }
+        }
+
         await _fileRepository.SaveChangesAsync();
         return true;
     }

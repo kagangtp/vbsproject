@@ -6,6 +6,7 @@ using IlkProjem.Core.Utilities.Results;
 using Microsoft.Extensions.Localization;
 using IlkProjem.Core.Resources;
 using IlkProjem.Core.Dtos.SpecificationDtos;
+using FluentValidation;
 
 namespace IlkProjem.BLL.Services;
 
@@ -13,41 +14,54 @@ public class CustomerService : ICustomerService
 {
     private readonly ICustomerRepository _repository;
     private readonly IStringLocalizer<Messages> _localizer;
+    private readonly IValidator<CustomerCreateDto> _createValidator;
+    private readonly IValidator<CustomerUpdateDto> _updateValidator;
+    private readonly IValidator<CustomerDeleteDto> _deleteValidator;
 
-    public CustomerService(ICustomerRepository repository, IStringLocalizer<Messages> localizer)
+    public CustomerService(
+        ICustomerRepository repository,
+        IStringLocalizer<Messages> localizer,
+        IValidator<CustomerCreateDto> createValidator,
+        IValidator<CustomerUpdateDto> updateValidator,
+        IValidator<CustomerDeleteDto> deleteValidator)
     {
         _repository = repository;
         _localizer = localizer;
+        _createValidator = createValidator;
+        _updateValidator = updateValidator;
+        _deleteValidator = deleteValidator;
     }
 
     public async Task<IResult> AddCustomer(CustomerCreateDto createDto, CancellationToken ct = default)
     {
+        var validationResult = await _createValidator.ValidateAsync(createDto, ct);
+        if (!validationResult.IsValid)
+        {
+            var errors = string.Join(" | ", validationResult.Errors.Select(e => e.ErrorMessage));
+            return new ErrorResult(errors);
+        }
+
         var customer = new Customer { Name = createDto.Name, Email = createDto.Email };
         await _repository.AddAsync(customer, ct);
         
-        // Uses key from Core/Resources/Messages.resx
         return new SuccessResult(_localizer["CustomerAdded"]); 
     }
 
     public async Task<IDataResult<List<CustomerReadDto>>> GetCustomersAsync(CustomerSpecParams custParams, CancellationToken ct = default)
     {
-        // 1. Create the Spec with the incoming params
         var spec = new CustomerCursorSpecification(custParams);
-
-        // 2. The Repository uses the Spec to build the optimized IQueryable
         var customers = await _repository.ListAsync(spec, ct);
 
-        // 3. Map entities to DTOs (same thing you do in GetCustomerById, but for a list)
         var customerDtos = customers.Select(c => new CustomerReadDto
         {
             Id = c.Id,
             Name = c.Name,
             Email = c.Email,
             Balance = c.Balance,
-            CreatedAt = c.CreatedAt
+            CreatedAt = c.CreatedAt,
+            ProfileImageId = c.ProfileImageId
         }).ToList();
 
-        // 4. Wrap in result and return
         return new SuccessDataResult<List<CustomerReadDto>>(customerDtos, "Customers retrieved");
     }
 
@@ -62,13 +76,22 @@ public class CustomerService : ICustomerService
             Name = customer.Name, 
             Email = customer.Email, 
             Balance = customer.Balance,
-            CreatedAt = customer.CreatedAt
+            CreatedAt = customer.CreatedAt,
+            ProfileImageId = customer.ProfileImageId,
+            ProfileImagePath = customer.ProfileImage?.RelativePath
         };
         return new SuccessDataResult<CustomerReadDto>(data);
     }
 
     public async Task<IResult> UpdateCustomer(CustomerUpdateDto updateDto, CancellationToken ct = default)
     {
+        var validationResult = await _updateValidator.ValidateAsync(updateDto, ct);
+        if (!validationResult.IsValid)
+        {
+            var errors = string.Join(" | ", validationResult.Errors.Select(e => e.ErrorMessage));
+            return new ErrorResult(errors);
+        }
+
         var existingCustomer = await _repository.GetByIdAsync(updateDto.Id, ct);
         if (existingCustomer == null) 
             return new ErrorResult(_localizer["CustomerNotFound"]);
@@ -83,6 +106,13 @@ public class CustomerService : ICustomerService
 
     public async Task<IResult> DeleteCustomer(CustomerDeleteDto deleteDto, CancellationToken ct = default)
     {
+        var validationResult = await _deleteValidator.ValidateAsync(deleteDto, ct);
+        if (!validationResult.IsValid)
+        {
+            var errors = string.Join(" | ", validationResult.Errors.Select(e => e.ErrorMessage));
+            return new ErrorResult(errors);
+        }
+
         var deleted = await _repository.DeleteAsync(deleteDto.Id, ct);
         if (!deleted) return new ErrorResult(_localizer["DeleteError"]);
 

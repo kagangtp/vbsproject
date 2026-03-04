@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { SingleResponseModel } from '../models/responses/single-response-model';
 import { ResponseModel } from '../models/responses/response-model';
+import { environment } from '../../../environments/environment';
 
 // Backend'den dönen LoginResponseDto'ya karşılık gelen interface
 export interface LoginResponse {
@@ -17,12 +18,12 @@ export interface LoginResponse {
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = 'http://localhost:5005/api/auth';
+  private authUrl = environment.apiUrl + '/auth';
 
   // --- Login ---
   login(loginData: any): Observable<SingleResponseModel<LoginResponse>> {
     return this.http.post<SingleResponseModel<LoginResponse>>(
-      `${this.apiUrl}/login`,
+      `${this.authUrl}/login`,
       loginData,
       { withCredentials: true } // Cookie'yi almak için şart
     );
@@ -30,14 +31,14 @@ export class AuthService {
 
   // --- Register ---
   register(registerData: any): Observable<ResponseModel> {
-    return this.http.post<ResponseModel>(`${this.apiUrl}/register`, registerData);
+    return this.http.post<ResponseModel>(`${this.authUrl}/register`, registerData);
   }
 
   // --- Refresh Token ---
   // 401 alınca interceptor tarafından otomatik çağrılacak
   refreshToken(): Observable<SingleResponseModel<LoginResponse>> {
     return this.http.post<SingleResponseModel<LoginResponse>>(
-      `${this.apiUrl}/refresh`,
+      `${this.authUrl}/refresh`,
       {},
       { withCredentials: true } // HttpOnly cookie otomatik gönderilir
     ).pipe(
@@ -54,7 +55,7 @@ export class AuthService {
   // --- Revoke (Logout) ---
   revokeToken(): Observable<any> {
     return this.http.post(
-      `${this.apiUrl}/revoke`,
+      `${this.authUrl}/revoke`,
       {},
       { withCredentials: true }
     );

@@ -1,13 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FileService {
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:5005/api/Files';
+    private apiUrl = environment.apiUrl + '/Files';
 
     upload(file: File): Observable<any> {
         const formData = new FormData();
@@ -17,5 +18,9 @@ export class FileService {
 
     assignOwner(fileId: string, ownerId: number, ownerType: string): Observable<any> {
         return this.http.put<any>(`${this.apiUrl}/${fileId}/assign`, { ownerId, ownerType });
+    }
+
+    downloadAsBlob(fileId: string): Observable<Blob> {
+        return this.http.get(`${this.apiUrl}/${fileId}/download`, { responseType: 'blob' });
     }
 }
