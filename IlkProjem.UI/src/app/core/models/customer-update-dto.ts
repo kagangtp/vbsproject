@@ -3,4 +3,5 @@ export interface CustomerUpdateDto {
   name: string;
   email: string;
   balance: number;
+  tcKimlikNo?: string | null;
 }

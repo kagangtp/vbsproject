@@ -14,6 +14,7 @@ import { AddHouse } from './features/add-house/add-house';
 import { EditCar } from './features/edit-car/edit-car';
 import { EditHouse } from './features/edit-house/edit-house';
 import { SendEmail } from './features/send-email/send-email';
+import { Settings } from './features/settings/settings';
 
 export const routes: Routes = [
   { path: 'register', component: RegistrationPage },
@@ -35,7 +36,7 @@ export const routes: Routes = [
       { path: 'customer/:id/edit-car/:carId', component: EditCar },
       { path: 'customer/:id/edit-house/:houseId', component: EditHouse },
       { path: 'send-email', component: SendEmail },
-
+      { path: 'settings', component: Settings },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

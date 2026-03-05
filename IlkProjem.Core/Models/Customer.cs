@@ -6,6 +6,7 @@ public class Customer : BaseEntity
     public required string Name { get; set; }
     public string? Email { get; set; }
     public decimal Balance { get; set; }
+    public string? TcKimlikNo { get; set; } //T.C. Kimlik Numarası
 
     // --- DOSYA BAĞLANTISI BURADA BAŞLIYOR ---
     

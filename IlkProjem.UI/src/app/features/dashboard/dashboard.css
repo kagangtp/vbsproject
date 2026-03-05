@@ -1,40 +1,25 @@
-/* --- 1. GENEL KONTEYNER VE GİRİŞ --- */
 .dashboard-wrapper {
   padding: 32px;
-  background-color: #f8fafc;
-  /* Slate-50: Çok hafif, ferah bir gri */
-  min-height: calc(100vh - 64px);
+  background-color: var(--bg-primary, #f8fafc);
+  transition: background-color 0.3s ease;
 }
 
 .header-section {
   display: flex;
-  /* Alignment magic */
   justify-content: space-between;
   align-items: center;
-  /* Centers everything vertically */
   gap: 24px;
   margin-bottom: 32px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
   padding-bottom: 24px;
 }
 
-/* Ensure title doesn't take too much space */
 .title-area {
   flex: 0 1 auto;
 }
 
 .header-section h1 {
-  color: #0f172a;
-  font-size: 1.875rem;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  margin-bottom: 0;
-  /* Reduced to align better with search bar */
-}
-
-.header-section h1 {
-  color: #0f172a;
-  /* Slate-900: Derin, okunabilir siyah */
+  color: var(--text-primary, #0f172a);
   font-size: 1.875rem;
   font-weight: 800;
   letter-spacing: -0.025em;
@@ -42,8 +27,7 @@
 }
 
 .header-section p {
-  color: #64748b;
-  /* Slate-500: Yardımcı metin rengi */
+  color: var(--text-secondary, #64748b);
   font-size: 1rem;
 }
 
@@ -56,7 +40,7 @@
 
 .list-header {
   display: grid;
-  grid-template-columns: 80px 1.5fr 2fr 1fr 1fr 100px;
+  grid-template-columns: 1.5fr 2fr 1fr 1fr 100px;
   padding: 0 24px 8px 24px;
   color: #94a3b8;
   /* Slate-400 */
@@ -69,14 +53,13 @@
 /* --- 3. MODERN LİSTE KARTI (PREMIUM LOOK) --- */
 .list-card {
   display: grid;
-  grid-template-columns: 80px 1.5fr 2fr 1fr 1fr 100px;
+  grid-template-columns: 1.5fr 2fr 1fr 1fr 100px;
   align-items: center;
-  background: #ffffff;
+  background: var(--card-bg, #ffffff);
   padding: 20px 24px;
   border-radius: 16px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color, #e2e8f0);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  /* Çok hafif derinlik */
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -96,10 +79,9 @@
 
 .list-card:hover {
   transform: translateY(-2px);
-  border-color: #6366f1;
-  /* Indigo-500 */
+  border-color: var(--accent-primary, #6366f1);
   box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.1);
-  background-color: #ffffff;
+  background: var(--bg-secondary, #ffffff);
 }
 
 .list-card:hover::before {
@@ -107,25 +89,16 @@
 }
 
 /* --- 4. SÜTUN DETAYLARI --- */
-.id-badge {
-  background: #f1f5f9;
-  color: #475569;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  font-family: var(--font-mono);
-  /* Teknik bir hava katar */
-}
+
 
 .customer-name {
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary, #1e293b);
   font-size: 1rem;
 }
 
 .email-text {
-  color: #64748b;
+  color: var(--text-secondary, #64748b);
   font-size: 0.95rem;
 }
 
@@ -137,7 +110,7 @@
 }
 
 .date-text {
-  color: #94a3b8;
+  color: var(--text-muted, #94a3b8);
   font-size: 0.875rem;
 }
 
@@ -149,8 +122,8 @@
 }
 
 .btn-icon {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-primary, #f8fafc);
+  border: 1px solid var(--border-color, #e2e8f0);
   cursor: pointer;
   width: 36px;
   height: 36px;
@@ -173,9 +146,9 @@
 }
 
 .btn-icon.edit:hover {
-  background: #e0e7ff;
-  color: #4338ca;
-  border-color: #c7d2fe;
+  background: var(--bg-tertiary, #e0e7ff);
+  color: var(--accent-hover, #4338ca);
+  border-color: var(--accent-primary, #c7d2fe);
 }
 
 .btn-icon.delete:hover {
@@ -185,9 +158,9 @@
 }
 
 .btn-icon.assets:hover {
-  background: #eef2ff;
-  color: #4338ca;
-  border-color: #c7d2fe;
+  background: var(--bg-tertiary, #eef2ff);
+  color: var(--accent-hover, #4338ca);
+  border-color: var(--accent-primary, #c7d2fe);
 }
 
 /* --- 6. MODAL STİLLERİ (GÜZELEŞTİRİLMİŞ) --- */
@@ -207,17 +180,17 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--card-bg, white);
   width: 100%;
   max-width: 480px;
   border-radius: 24px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
 }
 
 .modal-header {
   padding: 24px 32px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border-color, #f1f5f9);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -235,7 +208,7 @@
   display: block;
   font-size: 0.875rem;
   font-weight: 700;
-  color: #475569;
+  color: var(--text-secondary, #475569);
   margin-bottom: 8px;
 }
 
@@ -243,20 +216,23 @@
   width: 100%;
   padding: 14px 16px;
   border-radius: 12px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border-color, #e2e8f0);
+  background-color: var(--bg-primary, white);
+  color: var(--text-primary, #0f172a);
   transition: all 0.2s;
   font-size: 1rem;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #6366f1;
+  border-color: var(--accent-primary, #6366f1);
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
 .modal-footer {
   padding: 24px 32px;
-  background: #f8fafc;
+  background: var(--bg-primary, #f8fafc);
+  border-top: 1px solid var(--border-color, #e2e8f0);
   border-radius: 0 0 24px 24px;
   display: flex;
   gap: 12px;
@@ -264,7 +240,7 @@
 }
 
 .btn-primary {
-  background: #6366f1;
+  background: var(--accent-primary, #6366f1);
   color: white;
   padding: 12px 24px;
   border-radius: 12px;
@@ -299,12 +275,11 @@
 .search-box {
   display: flex;
   align-items: center;
-  background: white;
+  background: var(--card-bg, white);
   width: 100%;
   padding: 6px 6px 6px 16px;
   border-radius: 14px;
-  /* Matches your list-card radius */
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color, #e2e8f0);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: all 0.2s;
 }
@@ -316,18 +291,18 @@
 
 .search-box input {
   border: none;
+  background: transparent;
   outline: none;
   flex: 1;
   padding: 8px 0;
   font-size: 0.95rem;
-  color: #1e293b;
+  color: var(--text-primary, #1e293b);
 }
 
 .btn-search {
-  background-color: #f1f5f9;
-  /* Slate-100 */
-  border: 1px solid #e2e8f0;
-  color: #475569;
+  background-color: var(--bg-primary, #f1f5f9);
+  border: 1px solid var(--border-color, #e2e8f0);
+  color: var(--text-secondary, #475569);
   padding: 8px 18px;
   border-radius: 10px;
   font-weight: 600;
@@ -336,8 +311,8 @@
 }
 
 .btn-search:hover {
-  background-color: #e2e8f0;
-  color: #0f172a;
+  background-color: var(--bg-tertiary, #e2e8f0);
+  color: var(--text-primary, #0f172a);
 }
 
 /* --- 9. MODERN PAGINATION CONTROLS --- */
@@ -382,9 +357,9 @@
   border-radius: 12px;
   font-weight: 700;
   font-size: 0.875rem;
-  background: #ecfdf5;
-  color: #059669;
-  border: 1px solid #a7f3d0;
+  background: var(--bg-tertiary, #ecfdf5);
+  color: #10b981;
+  border: 1px solid var(--border-color, #a7f3d0);
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
@@ -407,10 +382,9 @@
   font-size: 0.875rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  border: 1px solid #e2e8f0;
-  background: white;
-  color: #475569;
-  /* Slate-600 */
+  border: 1px solid var(--border-color, #e2e8f0);
+  background: var(--card-bg, white);
+  color: var(--text-secondary, #475569);
 }
 
 /* Specific Style for NEXT (Primary Vibe) */
@@ -431,17 +405,16 @@
 
 /* Specific Style for PREVIOUS (Secondary Vibe) */
 .btn-prev:hover:not(:disabled) {
-  background: #f1f5f9;
-  color: #1e293b;
+  background: var(--bg-secondary, #f1f5f9);
+  color: var(--text-primary, #1e293b);
   transform: translateX(-4px);
-  /* Subtle backward nudge */
 }
 
 /* Disabled State: Matches your Slate theme */
 .btn-pagination:disabled {
-  background: #f8fafc;
-  color: #cbd5e1;
-  border-color: #f1f5f9;
+  background: var(--bg-primary, #f8fafc);
+  color: var(--text-muted, #cbd5e1);
+  border-color: var(--border-color, #f1f5f9);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -452,41 +425,41 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: white;
+  background: var(--card-bg, white);
   padding: 6px 12px 6px 16px;
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color, #e2e8f0);
 }
 
 .page-size-selector label {
   font-size: 0.825rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-secondary, #64748b);
   white-space: nowrap;
 }
 
 .page-size-selector select {
   appearance: none;
   -webkit-appearance: none;
-  background: #f1f5f9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E") no-repeat right 10px center;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-primary, #f1f5f9) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E") no-repeat right 10px center;
+  border: 1px solid var(--border-color, #e2e8f0);
   border-radius: 8px;
   padding: 8px 30px 8px 12px;
   font-size: 0.875rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary, #1e293b);
   cursor: pointer;
   min-width: 60px;
   transition: all 0.2s;
 }
 
 .page-size-selector select:hover {
-  border-color: #6366f1;
-  background-color: #eef2ff;
+  border-color: var(--accent-primary, #6366f1);
+  background-color: var(--bg-tertiary, #eef2ff);
 }
 
 .page-size-selector select:focus {
   outline: none;
-  border-color: #6366f1;
+  border-color: var(--accent-primary, #6366f1);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }

@@ -2,27 +2,33 @@
   display: block;
   height: 100%;
   font-family: var(--font-sans);
-  font-weight: var(--font-weight-body);
 }
 
 .sidebar-container {
-  width: 260px;
-  height: 100vh;
-  background-color: #ffffff;
-  border-right: 1px solid #f0f0f0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-primary, #ffffff);
+  border-right: 1px solid var(--border-color, #f0f0f0);
   display: flex;
   flex-direction: column;
-  /* İçeriği dikey sıralar */
+  overflow: hidden;
   transition: all 0.3s ease;
-  position: sticky;
-  top: 0;
 }
 
-/* 1. Header & Logo Bölümü */
+/* Metinleri Gizleme Mantığı (Grid Parent'tan gelen .sidebar-collapsed sınıfına bakar) */
+:host-context(.sidebar-collapsed) .logo-text,
+:host-context(.sidebar-collapsed) .nav-text,
+:host-context(.sidebar-collapsed) .logout-text {
+  opacity: 0;
+  display: none;
+  /* Boşluk kalmaması için */
+}
+
 .sidebar-header {
-  padding: 32px 24px;
-  flex-shrink: 0;
-  /* Header'ın boyutu asla küçülmez */
+  padding: 24px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo-box {
@@ -31,38 +37,19 @@
   gap: 12px;
 }
 
-.logo-icon {
-  font-size: 1.5rem;
-}
-
 .logo-text {
-  font-family: var(--font-serif);
   font-weight: 600;
   font-size: 1.25rem;
-  color: #1a202c;
-  letter-spacing: -0.5px;
+  color: var(--text-primary, #1a202c);
+  white-space: nowrap;
 }
 
-/* 2. Orta Navigasyon (Esnek Bölge) */
 .sidebar-nav {
   flex: 1;
-  /* Kalan tüm alanı kaplar ve footer'ı aşağı iter */
   padding: 0 12px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  overflow-y: auto;
-  /* İçerik taşarsa footer'ı itmek yerine kendi içinde kayar */
-}
-
-/* Profesyonel Scrollbar Görünümü */
-.sidebar-nav::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar-nav::-webkit-scrollbar-thumb {
-  background: #edf2f7;
-  border-radius: 10px;
 }
 
 .nav-link {
@@ -70,74 +57,47 @@
   align-items: center;
   padding: 12px 16px;
   text-decoration: none;
-  color: #718096;
+  color: var(--text-secondary, #718096);
   border-radius: 12px;
+  white-space: nowrap;
   transition: all 0.2s ease;
-  position: relative;
+  border: none;
+  background: transparent;
+  width: 100%;
 }
 
-.nav-link:hover {
-  background-color: #f7fafc;
-  color: #4a5568;
-}
-
-/* Aktif Sayfa Stili */
 .nav-link.active {
-  background-color: #f0f5ff;
-  color: #3182ce;
+  background-color: var(--bg-tertiary, #f0f5ff);
+  color: var(--accent-primary, #3182ce);
   font-weight: 600;
 }
 
-.nav-link.active::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 15%;
-  height: 70%;
-  width: 4px;
-  background-color: #3182ce;
-  border-radius: 0 4px 4px 0;
-}
-
 .icon {
-  width: 24px;
-  font-style: normal;
+  min-width: 24px;
   display: flex;
   justify-content: center;
   font-size: 1.1rem;
 }
 
-.nav-divider {
-  height: 1px;
-  background-color: #edf2f7;
-  margin: 16px 12px;
-  flex-shrink: 0;
-}
-
-/* 3. Footer & Logout Bölümü (Sabit En Alt) */
 .sidebar-footer {
-  padding: 24px 12px;
-  border-top: 1px solid #f7fafc;
-  flex-shrink: 0;
-  /* Footer boyutu asla değişmez */
-  background-color: #ffffff;
+  padding: 20px 12px;
+  border-top: 1px solid var(--border-color, #f7fafc);
 }
 
 .logout-button {
-  width: 100%;
   display: flex;
   align-items: center;
-  gap: 0px;
   padding: 12px 16px;
+  width: 100%;
   border: none;
+  border-radius: 12px;
   background: transparent;
   color: #e53e3e;
-  cursor: pointer;
-  border-radius: 12px;
-  font-family: var(--font-sans);
   font-size: 0.95rem;
-  font-weight: var(--font-weight-body-semibold);
-  transition: all 0.2s;
+  font-weight: 600;
+  cursor: pointer;
+  gap: 0px;
+  transition: all 0.2s ease;
 }
 
 .logout-button:hover {
@@ -145,22 +105,11 @@
   color: #c53030;
 }
 
-.logout-button:active {
-  transform: scale(0.95);
-}
-
-:host {
-  display: block;
-  height: 100%;
-}
-
-.sidebar-container {
-  width: 260px;
-  /* 100vh yerine 100% yapıyoruz ki 
-     parent grid'in (100vh - 64px) alanına sığsın */
-  height: 100%;
-  background-color: #ffffff;
-  border-right: 1px solid #f0f0f0;
-  display: flex;
-  flex-direction: column;
+.toggle-btn {
+  background: var(--bg-secondary, #f7fafc);
+  border: 1px solid var(--border-color, #edf2f7);
+  color: var(--text-primary, #475569);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 4px;
 }

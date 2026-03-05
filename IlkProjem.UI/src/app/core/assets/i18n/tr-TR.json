@@ -24,6 +24,8 @@
     "NAME_LABEL": "Ad Soyad",
     "EMAIL_LABEL": "E-posta Adresi",
     "BALANCE_LABEL": "Bakiye (TRY)",
+    "TC_KIMLIK_LABEL": "T.C. Kimlik No",
+    "TC_KIMLIK_ERROR": "Geçerli bir T.C. Kimlik No girmelisiniz.",
     "SAVE_CHANGES": "Değişiklikleri Kaydet",
     "SAVE_CUSTOMER": "Müşteriyi Kaydet",
     "CANCEL": "Vazgeç",
@@ -179,5 +181,15 @@
   },
   "SPINNER": {
     "LOADING": "Yükleniyor..."
+  },
+  "SETTINGS_PAGE": {
+    "TITLE": "Ayarlar",
+    "SUBTITLE": "Uygulama tercihlerinizi yönetin.",
+    "THEME_TITLE": "Görünüm",
+    "THEME_DESC": "Uygulamanın temasını değiştirin.",
+    "DARK_MODE_LABEL": "Karanlık Mod",
+    "LANGUAGE_TITLE": "Dil ve Bölge",
+    "LANGUAGE_DESC": "Kullanmak istediğiniz dili seçin.",
+    "LANGUAGE_LABEL": "Uygulama Dili"
   }
 }

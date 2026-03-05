@@ -1,5 +1,6 @@
 using FluentValidation;
 using IlkProjem.Core.Dtos.CustomerDtos;
+using IlkProjem.Core.Utilities.Helpers;
 
 namespace IlkProjem.BLL.ValidationRules.FluentValidation.CustomerDtoValidators;
 
@@ -21,5 +22,9 @@ public class CustomerUpdateDtoValidator : AbstractValidator<CustomerUpdateDto>
 
         RuleFor(x => x.Balance)
             .GreaterThanOrEqualTo(0).WithMessage("Bakiye negatif olamaz.");
+
+        RuleFor(x => x.TcKimlikNo)
+            .Must(ValidationHelpers.BeValidTcKimlik)
+            .WithMessage("Girilen TC Kimlik No geçerli değildir.");
     }
 }

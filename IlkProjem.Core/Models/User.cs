@@ -10,7 +10,9 @@ public class User
     public string? Role { get; set; } 
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    
+
+    public Guid? ProfilePhotoId { get; set; } // Profil fotoğrafı için dosya ID'si (varsa)
+
     // Bir kullanıcının birden fazla refresh token'ı olabilir (çoklu cihaz)
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 }

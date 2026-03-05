@@ -58,7 +58,7 @@ public class CustomerController : ControllerBase
     public async Task<IActionResult> Update(CustomerUpdateDto updateDto, CancellationToken ct)
     {
         var result = await _customerService.UpdateCustomer(updateDto, ct);
-        return result.Success ? Ok(result) : NotFound(result);
+        return result.Success ? Ok(result) : BadRequest(result);
     }
 
     // "Sil"

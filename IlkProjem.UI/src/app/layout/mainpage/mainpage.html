@@ -1,11 +1,11 @@
-<div class="main-layout">
-  <app-navbar></app-navbar>   
-  
-  <app-sidebar></app-sidebar>
+<div class="main-layout" [class.sidebar-collapsed]="side.isCollapsed()">
+
+  <app-navbar></app-navbar>
+
+  <app-sidebar #side></app-sidebar>
 
   <main class="content-area">
     <router-outlet></router-outlet>
   </main>
 
-  <!-- Enhance and update <app-footer></app-footer> -->
 </div>

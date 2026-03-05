@@ -69,7 +69,8 @@ export class Dashboard implements OnInit, OnDestroy {
     this.updateForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      balance: [0, [Validators.required]]
+      balance: [0, [Validators.required]],
+      tcKimlikNo: ['', [Validators.pattern('^[1-9]{1}[0-9]{10}$')]]
     });
   }
 
@@ -96,7 +97,8 @@ export class Dashboard implements OnInit, OnDestroy {
     this.updateForm.patchValue({
       name: customer.name,
       email: customer.email,
-      balance: customer.balance
+      balance: customer.balance,
+      tcKimlikNo: customer.tcKimlikNo
     });
   }
 
@@ -152,7 +154,8 @@ export class Dashboard implements OnInit, OnDestroy {
     this.updateForm.reset({
       name: '',
       email: '',
-      balance: 0 // <--- Bunu eklemezsen form 'invalid' kalır!
+      balance: 0, // <--- Bunu eklemezsen form 'invalid' kalır!
+      tcKimlikNo: ''
     });
   }
 

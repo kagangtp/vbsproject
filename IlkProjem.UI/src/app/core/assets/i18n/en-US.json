@@ -33,6 +33,8 @@
     "NAME_LABEL": "Full Name",
     "EMAIL_LABEL": "Email Address",
     "BALANCE_LABEL": "Balance (TRY)",
+    "TC_KIMLIK_LABEL": "National ID (TC)",
+    "TC_KIMLIK_ERROR": "Please enter a valid National ID.",
     "SAVE_CHANGES": "Save Changes",
     "SAVE_CUSTOMER": "Save Customer",
     "CANCEL": "Cancel",
@@ -179,5 +181,15 @@
   },
   "SPINNER": {
     "LOADING": "Loading..."
+  },
+  "SETTINGS_PAGE": {
+    "TITLE": "Settings",
+    "SUBTITLE": "Manage your application preferences.",
+    "THEME_TITLE": "Appearance",
+    "THEME_DESC": "Change the application theme.",
+    "DARK_MODE_LABEL": "Dark Mode",
+    "LANGUAGE_TITLE": "Language & Region",
+    "LANGUAGE_DESC": "Select your preferred language.",
+    "LANGUAGE_LABEL": "Application Language"
   }
 }

@@ -99,6 +99,7 @@ public class CustomerService : ICustomerService
         existingCustomer.Name = updateDto.Name;
         existingCustomer.Email = updateDto.Email;
         existingCustomer.Balance = updateDto.Balance;
+        existingCustomer.TcKimlikNo = updateDto.TcKimlikNo;
 
         await _repository.UpdateAsync(existingCustomer, ct);
         return new SuccessResult(_localizer["CustomerUpdated"]);
